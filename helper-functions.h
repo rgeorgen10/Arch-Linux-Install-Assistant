@@ -14,6 +14,27 @@ void clear() {
     system("clear");
 }
 
+void clearPrevLine() {
+    printf("\033[F");
+}
+
+bool uefiCheck() {
+    char output[2];
+    char finalOutput[3] = "";
+    FILE *fp = popen("cat /sys/firmware/efi/fw_platform_size", "r");
+
+    if(fp == NULL) return false;
+
+    while(fgets(output, sizeof(output), fp) != NULL) { // Take the output of each character and add it the finalOutput
+        strcat(finalOutput, output);
+    }
+    pclose(fp);
+    if(strcmp(finalOutput, "64\n") == 0 || strcmp(finalOutput, "32\n") == 0) {  // Check if system is UEFI
+        return true;
+    }    
+    return false;
+
+}
 void printWelcome() {
     green();
     printf("|----------------------------------------------------| \n");

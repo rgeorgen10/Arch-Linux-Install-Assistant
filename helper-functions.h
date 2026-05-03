@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 void green() {
     printf("\033[0;32m");
@@ -34,6 +35,23 @@ bool uefiCheck() {
     }    
     return false;
 
+}
+bool checkDiskSelect(char diskOption[10]) {
+    char output[5];
+    char finalOutput[10];
+    // FILE *fp = popen(strcat("lsblk -d | grep ", diskOption), "r");
+    FILE *fp = popen("lsblk -d | grep nvme", "r");
+    if (fp == NULL) return false;
+
+    for(int i = 0; i < 5; ++i) {       // Take the output of each character and add it the finalOutput
+        strcat(finalOutput, output);
+    }
+    pclose(fp);
+    if(strchr(finalOutput, "diskOption") != NULL) {          // Check if the output contains the diskOption, if it does, the disk exists
+        return true;
+    }    
+    return false;
+    
 }
 void printWelcome() {
     green();

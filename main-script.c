@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "helper-functions.h"
 #include <string.h>
+#include <stdbool.h>
 
 int main() {
     printWelcome();    // Print Welcome Text and Script Information
@@ -27,8 +28,19 @@ continueScript:   // Continue the script
     printf("\n");
     green();
     bool uefi = uefiCheck();  // True if system has UEFI
-    if(uefi) {
-        printf("Has UEFI");
+    printf("Would you like to manually partition using FDISK or automatically partition (m/a): ");   // Prompt if the user wants automatic or manual partitioning.
+partitionPrompt:
+    char partitioning[2];
+    scanf("%s", &partitioning);
+    if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) {          // If the user wants automatic partitioning
+        green();
+        system("fdisk -l");
+        white();
+        printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
+        char diskSelection[10];
+        scanf("%s", &diskSelection);
+        bool diskExists = checkDiskSelect(diskSelection);
+        if(diskExists) printf("The disk exists");
     }
     return 0;
 }

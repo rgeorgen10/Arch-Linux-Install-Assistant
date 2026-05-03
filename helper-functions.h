@@ -37,17 +37,18 @@ bool uefiCheck() {
 
 }
 bool checkDiskSelect(char diskOption[10]) {
-    char output[5];
-    char finalOutput[10];
-    // FILE *fp = popen(strcat("lsblk -d | grep ", diskOption), "r");
-    FILE *fp = popen("lsblk -d | grep nvme", "r");
+    char output[512];
+    char finalOutput[1024] = "";
+    char commandString[50] = "lsblk -d | grep ";
+    strcat(commandString, diskOption);
+    FILE *fp = popen(commandString, "r");
     if (fp == NULL) return false;
 
-    for(int i = 0; i < 5; ++i) {       // Take the output of each character and add it the finalOutput
+    while(fgets(output, sizeof(output), fp) != NULL) {       // Take the output of each character and add it the finalOutput
         strcat(finalOutput, output);
     }
     pclose(fp);
-    if(strchr(finalOutput, "diskOption") != NULL) {          // Check if the output contains the diskOption, if it does, the disk exists
+    if(strstr(finalOutput, diskOption) != NULL) {          // Check if the output contains the diskOption, if it does, the disk exists
         return true;
     }    
     return false;

@@ -39,7 +39,7 @@ partitionPrompt:
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
         char diskSelection[10];
         scanf("%s", &diskSelection);
-        bool diskExists = checkDiskSelect(diskSelection);
+        bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if(diskExists) printf("The disk exists");
     }
     return 0;

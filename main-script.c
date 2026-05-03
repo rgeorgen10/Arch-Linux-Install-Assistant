@@ -40,7 +40,6 @@ partitionPrompt:
         char diskSelection[10];
         scanf("%s", &diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
-        if(diskExists) printf("The disk exists");
     }
     return 0;
 }

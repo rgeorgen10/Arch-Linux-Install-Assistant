@@ -75,6 +75,18 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     strcat(makeRoot, diskAddr);
     strcat(makeRoot, " mkpart primary mkswap 8001M 100%");
     system(makeRoot);
+    char mountBoot = "mount /dev/";
+    strcat(mountBoot, diskSelection);
+    strcat(mountBoot, " /mnt"); 
+    system(mountBoot);
+    char mountSwap = "mount /dev/";
+    strcat(mountSwap, diskSelection);
+    strcat(mountSwap, " /mnt");
+    system(mountSwap);
+    char makeRoot = "mount /dev/";
+    strcat(makeRoot, diskSelection);
+    strcat(makeRoot, " /mnt");
+    system(makeRoot);
 }
 void printWelcome() {
     green();

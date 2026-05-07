@@ -48,6 +48,8 @@ diskPrompt:
             fflush(stdout);
             goto diskPrompt;
         }
+        green();
+        printf("Disks have been successfully partitioned");
     }
     return 0;
 }

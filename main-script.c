@@ -37,9 +37,17 @@ partitionPrompt:
         system("fdisk -l");
         white();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
+diskPrompt:
         char diskSelection[10];
         scanf("%s", &diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
+        if (diskExists) diskAutoFormat(diskSelection, uefi);     // If disk specified exists, auto format
+        else {
+            clearPrevLine();
+            printf("\nSelect an installation disk by typing the disk e.g. sda: "); 
+            fflush(stdout);
+            goto diskPrompt;
+        }
     }
     return 0;
 }

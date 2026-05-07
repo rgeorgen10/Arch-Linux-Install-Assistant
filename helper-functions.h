@@ -54,6 +54,28 @@ bool checkDiskSelect(char diskOption[10]) {           // This function could hav
     return false;
     
 }
+void diskAutoFormat(char diskSelection[10], bool uefi) {
+    char diskAddr[14] = "/dev/";
+    strcat(diskAddr, diskSelection);     // store the disk to be used
+    char clearDisk[50] = "parted –s ";
+    strcat(clearDisk, diskAddr);
+    strcat(clearDisk, " mklabel gpt");
+    system(clearDisk);
+    if(uefi) {
+        char makeBoot[50] = "parted -s ";
+        strcat(makeBoot, diskAddr);
+        strcat(makeBoot," mkpart primary FAT32 0% 1G");
+        system(makeBoot);
+    }
+    char makeSwap[50] = "parted -s ";
+    strcat(makeSwap, diskAddr);
+    strcat(makeSwap, " mkpart primary mkswap 1001M 8G");
+    system(makeSwap);
+    char makeRoot[50] = "parted -s ";
+    strcat(makeRoot, diskAddr);
+    strcat(makeRoot, " mkpart primary mkswap 8001M 100%");
+    system(makeRoot);
+}
 void printWelcome() {
     green();
     printf("|----------------------------------------------------| \n");

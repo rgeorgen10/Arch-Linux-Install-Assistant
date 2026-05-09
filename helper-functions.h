@@ -70,22 +70,27 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     char makeSwap[128] = "parted -s ";
     strcat(makeSwap, diskAddr);
     strcat(makeSwap, " mkpart primary mkswap 1001M 8G");
+    printf(makeSwap);
     system(makeSwap);
     char makeRoot[128] = "parted -s ";
     strcat(makeRoot, diskAddr);
     strcat(makeRoot, " mkpart primary mkswap 8001M 100%");
+    printf(makeRoot);
     system(makeRoot);
     char mountBoot = "mount /dev/";
     strcat(mountBoot, diskSelection);
     strcat(mountBoot, " /mnt"); 
+    printf(mountBoot);
     system(mountBoot);
     char mountSwap = "mount /dev/";
     strcat(mountSwap, diskSelection);
     strcat(mountSwap, " /mnt");
+    printf(mountSwap);
     system(mountSwap);
     char makeRoot = "mount /dev/";
     strcat(makeRoot, diskSelection);
     strcat(makeRoot, " /mnt");
+    printf(makeRoot);
     system(makeRoot);
 }
 void printWelcome() {

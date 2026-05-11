@@ -60,6 +60,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     char clearDisk[128] = "parted –s ";
     strcat(clearDisk, diskAddr);
     strcat(clearDisk, " mklabel gpt");
+    printf(clearDisk);
     system(clearDisk);
     if(uefi) {
         char makeBoot[128] = "parted -s ";

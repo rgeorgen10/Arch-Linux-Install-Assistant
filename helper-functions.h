@@ -87,11 +87,11 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     strcat(mountSwap, " /mnt");
     printf(mountSwap);
     system(mountSwap);
-    char makeRoot = "mount /dev/";
-    strcat(makeRoot, diskSelection);
-    strcat(makeRoot, " /mnt");
-    printf(makeRoot);
-    system(makeRoot);
+    char mountRoot = "mount /dev/";
+    strcat(mountRoot, diskSelection);
+    strcat(mountRoot, " /mnt");
+    printf(mountRoot);
+    system(mountRoot);
 }
 void printWelcome() {
     green();

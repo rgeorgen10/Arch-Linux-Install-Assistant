@@ -66,10 +66,11 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     strcat(clearDisk, " mklabel gpt");
     printf(clearDisk);
     system(clearDisk);
-    if(true) { // replace true with uefi
+    if(uefi) { // replace true with uefi
         char makeBoot[128] = "parted -s ";
         strcat(makeBoot, diskAddr);
         strcat(makeBoot,"1 mkpart primary FAT32 0% 1G");
+        printf(makeBoot);
         system(makeBoot);
     }
     char makeSwap[128] = "parted -s ";

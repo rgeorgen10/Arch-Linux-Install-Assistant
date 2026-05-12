@@ -69,7 +69,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     if(uefi) { // replace true with uefi
         char makeBoot[128] = "parted -s ";
         strcat(makeBoot, diskAddr);
-        strcat(makeBoot,"1 mkpart primary FAT32 0% 1G");
+        strcat(makeBoot,"1 mkpart primary FAT32 0%% 1G");
         printf(makeBoot);
         system(makeBoot);
     }

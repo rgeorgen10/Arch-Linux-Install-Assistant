@@ -57,12 +57,16 @@ bool checkDiskSelect(char diskOption[10]) {           // This function could hav
 void diskAutoFormat(char diskSelection[10], bool uefi) {
     char diskAddr[14] = "/dev/";
     strcat(diskAddr, diskSelection);     // store the disk to be used
+    char unmountDisk[128] = "umount ";
+    strcat(unmountDisk, diskAddr);
+    strcat(unmountDisk, "1");
+    system(unmountDisk);                  // unmount partition 1 on the disk
     char clearDisk[128] = "parted –s ";
     strcat(clearDisk, diskAddr);
     strcat(clearDisk, " mklabel gpt");
     printf(clearDisk);
     system(clearDisk);
-    if(uefi) {
+    if(true) { // replace true with uefi
         char makeBoot[128] = "parted -s ";
         strcat(makeBoot, diskAddr);
         strcat(makeBoot,"1 mkpart primary FAT32 0% 1G");

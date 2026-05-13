@@ -94,10 +94,10 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     printf(mountSwap);
     system(mountSwap);
     char mountBoot[128] = "mount --mkdir /dev/";
-    strcat(mountRoot, diskSelection);
-    strcat(mountRoot, "1 /mnt/boot");
-    printf(mountRoot);
-    system(mountRoot);
+    strcat(mountBoot, diskSelection);
+    strcat(mountBoot, "1 /mnt/boot");
+    printf(mountBoot);
+    system(mountBoot);
 }
 void printWelcome() {
     green();

@@ -69,7 +69,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     if(uefi) { // replace true with uefi
         char makeBoot[128] = "parted -s ";
         strcat(makeBoot, diskAddr);
-        strcat(makeBoot," mkpart primary FAT32 0%% 1G");
+        strcat(makeBoot," mkpart primary FAT32 0% 1G");
         printf(makeBoot);
         system(makeBoot);
     }
@@ -80,22 +80,22 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     system(makeSwap);
     char makeRoot[128] = "parted -s ";
     strcat(makeRoot, diskAddr);
-    strcat(makeRoot, " mkpart primary ext4 8001M 100%%");
+    strcat(makeRoot, " mkpart primary ext4 8001M 100%");
     printf(makeRoot);
     system(makeRoot);
-    char mountBoot[128] = "mount /dev/";
-    strcat(mountBoot, diskSelection);
-    strcat(mountBoot, "1 /mnt"); 
-    printf(mountBoot);
-    system(mountBoot);
-    char mountSwap[128] = "mount /dev/";
-    strcat(mountSwap, diskSelection);
-    strcat(mountSwap, "2 /mnt");
-    printf(mountSwap);
-    system(mountSwap);
     char mountRoot[128] = "mount /dev/";
     strcat(mountRoot, diskSelection);
-    strcat(mountRoot, "3 /mnt");
+    strcat(mountRoot, "3 /mnt"); 
+    printf(mountRoot);
+    system(mountRoot);
+    char mountSwap[128] = "swapon ";
+    strcat(mountSwap, diskSelection);
+    strcat(mountSwap, "2");
+    printf(mountSwap);
+    system(mountSwap);
+    char mountBoot[128] = "mount --mkdir /dev/";
+    strcat(mountRoot, diskSelection);
+    strcat(mountRoot, "1 /mnt/boot");
     printf(mountRoot);
     system(mountRoot);
 }

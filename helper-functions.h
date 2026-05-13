@@ -75,12 +75,12 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     }
     char makeSwap[128] = "parted -s ";
     strcat(makeSwap, diskAddr);
-    strcat(makeSwap, " mkpart primary mkswap 1001M 8G");
+    strcat(makeSwap, " mkpart primary linux-swap 1001M 8G");
     printf(makeSwap);
     system(makeSwap);
     char makeRoot[128] = "parted -s ";
     strcat(makeRoot, diskAddr);
-    strcat(makeRoot, " mkpart primary ext4 8001M 100%");
+    strcat(makeRoot, " mkpart primary ext4 8001M 100%%");
     printf(makeRoot);
     system(makeRoot);
     char mountBoot[128] = "mount /dev/";

@@ -55,7 +55,7 @@ bool checkDiskSelect(char diskOption[10]) {           // This function could hav
     
 }
 void diskAutoFormat(char diskSelection[10], bool uefi) {
-    char diskAddr[14] = "/dev/";
+    char diskAddr[32] = "/dev/";
     strcat(diskAddr, diskSelection);     // store the disk to be used
     char unmountDisk[128] = "umount ";
     strcat(unmountDisk, diskAddr);

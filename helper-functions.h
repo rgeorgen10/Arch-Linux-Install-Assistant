@@ -61,7 +61,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     strcat(unmountDisk, diskAddr);
     strcat(unmountDisk, "1");
     system(unmountDisk);                  // unmount partition 1 on the disk
-    char clearDisk[128] = "parted –s ";
+    char clearDisk[128] = "parted -s ";
     strcat(clearDisk, diskAddr);
     strcat(clearDisk, " mklabel gpt");
     printf(clearDisk);

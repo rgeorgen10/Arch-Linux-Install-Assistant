@@ -88,7 +88,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
     strcat(mountRoot, "3 /mnt"); 
     printf(mountRoot);
     system(mountRoot);
-    char mountSwap[128] = "swapon ";
+    char mountSwap[128] = "swapon /dev/";
     strcat(mountSwap, diskSelection);
     strcat(mountSwap, "2");
     printf(mountSwap);

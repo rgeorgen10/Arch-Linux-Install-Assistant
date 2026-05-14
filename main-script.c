@@ -35,9 +35,8 @@ partitionPrompt:
     char partitioning[2];
     scanf("%s", &partitioning);
     if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) {          // If the user wants automatic partitioning
-        green();
         system("fdisk -l");
-        white();
+        green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt:
         char diskSelection[10];
@@ -50,8 +49,36 @@ diskPrompt:
             fflush(stdout);
             goto diskPrompt;
         }
-        green();
+        white();
         printf("Disks have been successfully partitioned");
+    }
+    else {  // If user wants to use FDISK
+        green();
+        printf("Use FDISK to create the following partitions: \n");
+        printf("1. A boot partition: 1GB (UEFI Systems Only) \n");
+        printf("2. A SWAP Partition: Size Variable \n");
+        printf("3. A Root Partition \n");
+        printf("4. A Separate Home Partition (Not Required)\n");
+        printf("Make Sure to Write Down the Address of Each Partition e.g. /dev/sda1 \n");
+        printf("Press Enter to continue to FDISK: ");
+        char fdiskCont[128];
+        scanf("%s", &fdiskCont);
+        system("fdisk -l");
+        green();
+        printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
+diskPrompt2:
+        char diskSelection[10];
+        scanf("%s", &diskSelection);
+        bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
+        if (!diskExists) {
+            clearPrevLine();
+            printf("\nSelect an installation disk by typing the disk e.g. sda: "); 
+            fflush(stdout);
+            goto diskPrompt2;
+        }
+        char fdiskCMD[32] = "fdisk /dev/";
+        strcat(fdiskCMD, diskSelection);
+        system(fdiskCMD);
     }
     return 0;
 }

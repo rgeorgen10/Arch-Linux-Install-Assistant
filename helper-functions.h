@@ -126,6 +126,43 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         // printf(mountBoot);
         system(mountBoot);
     }
+    else {  // Case for Legacy BIOS systems
+        char makeSwap[128] = "parted -s /dev/";
+        strcat(makeSwap, diskSelection);
+        strcat(makeSwap, " mkpart primary linux-swap 0% 8G");
+        // printf(makeSwap);
+        system(makeSwap);
+
+        char makeRoot[128] = "parted -s /dev/";
+        strcat(makeRoot, diskSelection);
+        strcat(makeRoot, " mkpart primary ext4 8001M 100%");
+        // printf(makeRoot);
+        system(makeRoot);
+
+        char formatSwap[128] = "mkswap ";           // don't forget swap!
+        strcat(formatSwap, diskAddr);
+        strcat(formatSwap, "1");
+        // printf(formatSwap);
+        system(formatSwap);
+
+        char formatRoot[128] = "mkfs.ext4 ";        // char array
+        strcat(formatRoot, diskAddr);
+        strcat(formatRoot, "2");
+        // printf(formatRoot);
+        system(formatRoot);
+
+        char mountRoot[128] = "mount ";
+        strcat(mountRoot, diskAddr);
+        strcat(mountRoot, "2 /mnt"); 
+        // printf(mountRoot);
+        system(mountRoot);
+
+        char mountSwap[128] = "swapon ";
+        strcat(mountSwap, diskAddr);
+        strcat(mountSwap, "2");
+        // printf(mountSwap);
+        system(mountSwap);
+    }
 }
 void printWelcome() {
     green();

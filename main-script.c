@@ -3,9 +3,11 @@
 #include "helper-functions.h"
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 int main() {
     printWelcome();    // Print Welcome Text and Script Information
+    green();
     printf("Would you like to continue with the installation of Arch Linux (y/n): ");
 continuePrompt:       // Ask user to continue
     char continueVar[2];

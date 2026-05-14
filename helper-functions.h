@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 void green() {
     printf("\033[0;32m");
@@ -57,58 +58,72 @@ bool checkDiskSelect(char diskOption[10]) {           // This function could hav
 void diskAutoFormat(char diskSelection[10], bool uefi) {
     char diskAddr[32] = "/dev/";
     strcat(diskAddr, diskSelection);     // store the disk to be used
+    if(isdigit(diskSelection[strlen(diskSelection) - 1])) { // checks if partitions are labeled as p1 instead of just 1 ex: /dev/nvme0n1p3
+        strcat(diskAddr, "p"); //
+    }
     char unmountDisk[128] = "umount ";
     strcat(unmountDisk, diskAddr);
     strcat(unmountDisk, "1");
+    // printf(unmountDisk);
     system(unmountDisk);                  // unmount partition 1 on the disk
     char clearDisk[128] = "parted -s ";
     strcat(clearDisk, diskAddr);
     strcat(clearDisk, " mklabel gpt");
+    // printf(clearDisk);
     system(clearDisk);
     if(uefi) { // replace true with uefi
-        char makeBoot[128] = "parted -s ";
-        strcat(makeBoot, diskAddr);
+        char makeBoot[128] = "parted -s /dev/";
+        strcat(makeBoot, diskSelection);
         strcat(makeBoot," mkpart primary FAT32 0% 1G");
+        // printf(makeBoot);
         system(makeBoot);
 
-        char makeSwap[128] = "parted -s ";
-        strcat(makeSwap, diskAddr);
+        char makeSwap[128] = "parted -s /dev/";
+        strcat(makeSwap, diskSelection);
         strcat(makeSwap, " mkpart primary linux-swap 1001M 8G");
+        // printf(makeSwap);
         system(makeSwap);
 
-        char makeRoot[128] = "parted -s ";
-        strcat(makeRoot, diskAddr);
+        char makeRoot[128] = "parted -s /dev/";
+        strcat(makeRoot, diskSelection);
         strcat(makeRoot, " mkpart primary ext4 8001M 100%");
+        // printf(makeRoot);
         system(makeRoot);
 
-        char formatBoot[128] = "mkfs.fat -F32 /dev/";   // char array, lowercase 'fat'
-        strcat(formatBoot, diskSelection);
+        char formatBoot[128] = "mkfs.fat -F32 ";   // char array, lowercase 'fat'
+        strcat(formatBoot, diskAddr);
         strcat(formatBoot, "1");
+        // printf(formatBoot);
         system(formatBoot);
 
-        char formatSwap[128] = "mkswap /dev/";           // don't forget swap!
-        strcat(formatSwap, diskSelection);
+        char formatSwap[128] = "mkswap ";           // don't forget swap!
+        strcat(formatSwap, diskAddr);
         strcat(formatSwap, "2");
+        // printf(formatSwap);
         system(formatSwap);
 
-        char formatRoot[128] = "mkfs.ext4 /dev/";        // char array
-        strcat(formatRoot, diskSelection);
+        char formatRoot[128] = "mkfs.ext4 ";        // char array
+        strcat(formatRoot, diskAddr);
         strcat(formatRoot, "3");
+        // printf(formatRoot);
         system(formatRoot);
 
-        char mountRoot[128] = "mount /dev/";
-        strcat(mountRoot, diskSelection);
+        char mountRoot[128] = "mount ";
+        strcat(mountRoot, diskAddr);
         strcat(mountRoot, "3 /mnt"); 
+        // printf(mountRoot);
         system(mountRoot);
 
-        char mountSwap[128] = "swapon /dev/";
-        strcat(mountSwap, diskSelection);
+        char mountSwap[128] = "swapon ";
+        strcat(mountSwap, diskAddr);
         strcat(mountSwap, "2");
+        // printf(mountSwap);
         system(mountSwap);
 
-        char mountBoot[128] = "mount --mkdir /dev/";
-        strcat(mountBoot, diskSelection);
+        char mountBoot[128] = "mount --mkdir ";
+        strcat(mountBoot, diskAddr);
         strcat(mountBoot, "1 /mnt/boot");
+        // printf(mountBoot);
         system(mountBoot);
     }
 }

@@ -89,7 +89,7 @@ enterBootPartUefi:
             flushInput();
             scanf("%s", bootPart);
             if(checkDiskSelect(bootPart)) {
-                char makeBootPart[128] = "mkfs.fat -F32 /dev/";
+                char makeBootPart[128] = "mkfs.fat -F32 -I /dev/";
                 strcat(makeBootPart, bootPart);
                 system(makeBootPart);
                 char mountBootPart[128] = "mount --mkdir /dev/";
@@ -111,7 +111,7 @@ enterSwapPartUefi:
         flushInput();
         scanf("%s", swapPart);
         if(checkDiskSelect(swapPart)) {
-            char makeSwapPart[128] = "mkswap /dev/";
+            char makeSwapPart[128] = "mkswap -F /dev/";
             strcat(makeSwapPart, swapPart);
             system(makeSwapPart);
             char mountSwapPart[128] = "swapon /dev/";
@@ -131,7 +131,7 @@ enterRootPartUefi:
         flushInput();
         scanf("%s", rootPart);
         if(checkDiskSelect(rootPart)) {
-            char makeRootPart[128] = "mkfs.ext4 /dev/";
+            char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);
             system(makeRootPart);
             char mountRootPart[128] = "mount /dev/";

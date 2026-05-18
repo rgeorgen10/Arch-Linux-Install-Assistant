@@ -90,19 +90,19 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         // printf(makeRoot);
         system(makeRoot);
 
-        char formatBoot[128] = "mkfs.fat -F32 ";   // char array, lowercase 'fat'
+        char formatBoot[128] = "mkfs.fat -F32 -I ";   // char array, lowercase 'fat'
         strcat(formatBoot, diskAddr);
         strcat(formatBoot, "1");
         // printf(formatBoot);
         system(formatBoot);
 
-        char formatSwap[128] = "mkswap ";           // don't forget swap!
+        char formatSwap[128] = "mkswap -F ";           // don't forget swap!
         strcat(formatSwap, diskAddr);
         strcat(formatSwap, "2");
         // printf(formatSwap);
         system(formatSwap);
 
-        char formatRoot[128] = "mkfs.ext4 ";        // char array
+        char formatRoot[128] = "mkfs.ext4 -F ";        // char array
         strcat(formatRoot, diskAddr);
         strcat(formatRoot, "3");
         // printf(formatRoot);
@@ -139,13 +139,13 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         // printf(makeRoot);
         system(makeRoot);
 
-        char formatSwap[128] = "mkswap ";           // don't forget swap!
+        char formatSwap[128] = "mkswap -F ";           // don't forget swap!
         strcat(formatSwap, diskAddr);
         strcat(formatSwap, "1");
         // printf(formatSwap);
         system(formatSwap);
 
-        char formatRoot[128] = "mkfs.ext4 ";        // char array
+        char formatRoot[128] = "mkfs.ext4 -F ";        // char array
         strcat(formatRoot, diskAddr);
         strcat(formatRoot, "2");
         // printf(formatRoot);

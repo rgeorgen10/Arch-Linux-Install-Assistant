@@ -37,7 +37,7 @@ bool uefiCheck() {
     return false;
 
 }
-bool checkDiskSelect(char diskOption[10]) {           // This function could have the bug if the user enters part of the disk name such as sd instead of sda. It will return that sd exists
+bool checkDiskSelect(char diskOption[64]) {           // This function could have the bug if the user enters part of the disk name such as sd instead of sda. It will return that sd exists
     char output[512];
     char finalOutput[1024] = "";
     char commandString[50] = "lsblk -f | grep ";

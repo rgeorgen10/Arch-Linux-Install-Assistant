@@ -39,7 +39,7 @@ partitionPrompt:
         green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt:
-        char diskSelection[10];
+        char diskSelection[64];
         scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if (diskExists) diskAutoFormat(diskSelection, uefi);     // If disk specified exists, auto format
@@ -67,7 +67,7 @@ diskPrompt:
         green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt2:
-        char diskSelection[10];
+        char diskSelection[64];
         scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if (!diskExists) {
@@ -76,20 +76,20 @@ diskPrompt2:
             fflush(stdout);
             goto diskPrompt2;
         }
-        char fdiskCMD[32] = "fdisk /dev/";
+        char fdiskCMD[128] = "fdisk /dev/";
         strcat(fdiskCMD, diskSelection);
         system(fdiskCMD);
         green();
         if(uefi) {
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
-            char bootPart[32];
+            char bootPart[128];
             scanf("%s", bootPart);
             if(checkDiskSelect(bootPart)) {
-                char makeBootPart[32] = "mkfs.fat -F32 /dev/";
+                char makeBootPart[128] = "mkfs.fat -F32 /dev/";
                 strcat(makeBootPart, bootPart);
                 system(makeBootPart);
-                char mountBootPart[32] = "mount --mkdir /dev/";
+                char mountBootPart[128] = "mount --mkdir /dev/";
                 strcat(mountBootPart, bootPart);
                 strcat(mountBootPart, " /mnt/boot");
                 system(mountBootPart);
@@ -104,14 +104,15 @@ enterBootPartUefi:
         }
         printf("Enter the Swap Partition Location e.g. sda2: ");
 enterSwapPartUefi:
-        char swapPart[32];
+        char swapPart[128];
         scanf("%s", swapPart);
         if(checkDiskSelect(swapPart)) {
-            char makeSwapPart[32] = "mkswap /dev/";
+            char makeSwapPart[128] = "mkswap /dev/";
             strcat(makeSwapPart, swapPart);
             system(makeSwapPart);
-            char mountSwapPart[32] = "swapon /dev/";
+            char mountSwapPart[128] = "swapon /dev/";
             strcat(mountSwapPart, swapPart);
+            system(mountSwapPart);
             goto enterRootPartUefi;
         }
         else {
@@ -122,15 +123,15 @@ enterSwapPartUefi:
         }
         printf("\nEnter the Root Partition Location e.g. sda2: ");
 enterRootPartUefi:
-        char rootPart[32];
+        char rootPart[128];
         scanf("%s", rootPart);
         if(checkDiskSelect(rootPart)) {
-            char makeRootPart[32] = "mkfs.ext4 /dev/";
+            char makeRootPart[128] = "mkfs.ext4 /dev/";
             strcat(makeRootPart, rootPart);
             system(makeRootPart);
-            char mountRootPart[32] = "mount /dev/";
+            char mountRootPart[128] = "mount /dev/";
             strcat(mountRootPart, rootPart);
-            strcat(mountRootPart, " /mnt/boot");
+            strcat(mountRootPart, " /mnt");
             system(mountRootPart);
             goto baseInstall;
         }

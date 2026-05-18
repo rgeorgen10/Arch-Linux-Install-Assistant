@@ -89,7 +89,7 @@ enterBootPartUefi:
                 char makeBootPart[32] = "mkfs.fat -F32 /dev/";
                 strcat(makeBootPart, bootPart);
                 system(makeBootPart);
-                char mountBootPart[32] = "mount /dev/";
+                char mountBootPart[32] = "mount --mkdir /dev/";
                 strcat(mountBootPart, bootPart);
                 strcat(mountBootPart, " /mnt/boot");
                 system(mountBootPart);

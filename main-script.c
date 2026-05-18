@@ -79,6 +79,25 @@ diskPrompt2:
         char fdiskCMD[32] = "fdisk /dev/";
         strcat(fdiskCMD, diskSelection);
         system(fdiskCMD);
+        green();
+        if(uefi) {
+            printf("\nEnter The Boot Partition Location e.g. sda1: ");
+enterBootPartUefi:
+            char bootPart[32];
+            scanf("%s", &bootPart);
+            if(checkDiskSelect(bootPart)) {
+                goto enterSwapPartUefi;
+            }
+            else {
+                clearPrevLine();
+                fflush(stdout);
+                printf("Partition not found: Enter the installation location e.g. sda1: ");
+                goto enterBootPartUefi;
+            }
+            printf("Enter the Swap Partition Location e.g. sda2: ");
+enterSwapPartUefi:
+
+        }
     }
     return 0;
 }

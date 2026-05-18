@@ -82,11 +82,11 @@ diskPrompt2:
         strcat(fdiskCMD, diskSelection);
         system(fdiskCMD);
         green();
+        char bootPart[128];
         if(uefi) {
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
             fflush(stdout);
-            char bootPart[128];
             if (fgets(bootPart, sizeof(bootPart), stdin) == NULL) goto enterBootPartUefi;
             bootPart[strcspn(bootPart, "\n")] = 0;
             if (strlen(bootPart) == 0) goto enterBootPartUefi;
@@ -96,11 +96,6 @@ enterBootPartUefi:
                 system(makeBootPart);
                 printf("DEBUG: mkfs.fat returned\n");
                 fflush(stdout); 
-                char mountBootPart[128] = "mount --mkdir /dev/";
-                strcat(mountBootPart, bootPart);
-                strcat(mountBootPart, " /mnt/boot");
-                system(mountBootPart);
-                goto enterSwapPartUefi;
             }
             else {
                 clearPrevLine();
@@ -153,6 +148,13 @@ enterRootPartUefi:
             fflush(stdout);
             printf("Partition not found: Enter the Root location e.g. sda1: ");
             goto enterRootPartUefi;
+        }
+        if(uefi) {
+            char mountBootPart[128] = "mount --mkdir /dev/";
+            strcat(mountBootPart, bootPart);
+            strcat(mountBootPart, " /mnt/boot");
+            system(mountBootPart);
+            goto enterSwapPartUefi;
         }        
 baseInstall:
     }

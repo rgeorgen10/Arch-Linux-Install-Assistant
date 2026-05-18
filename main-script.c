@@ -62,12 +62,14 @@ diskPrompt:
         printf("Make Sure to Write Down the Address of Each Partition e.g. /dev/sda1 \n");
         printf("Press Enter to continue to FDISK: ");
         char fdiskCont[128];
+        flushInput();
         scanf("%s", fdiskCont);
         system("fdisk -l");
         green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt2:
         char diskSelection[64];
+        flushInput();
         scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if (!diskExists) {
@@ -84,6 +86,7 @@ diskPrompt2:
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
             char bootPart[128];
+            flushInput();
             scanf("%s", bootPart);
             if(checkDiskSelect(bootPart)) {
                 char makeBootPart[128] = "mkfs.fat -F32 /dev/";
@@ -105,6 +108,7 @@ enterBootPartUefi:
         printf("Enter the Swap Partition Location e.g. sda2: ");
 enterSwapPartUefi:
         char swapPart[128];
+        flushInput();
         scanf("%s", swapPart);
         if(checkDiskSelect(swapPart)) {
             char makeSwapPart[128] = "mkswap /dev/";
@@ -124,6 +128,7 @@ enterSwapPartUefi:
         printf("\nEnter the Root Partition Location e.g. sda2: ");
 enterRootPartUefi:
         char rootPart[128];
+        flushInput();
         scanf("%s", rootPart);
         if(checkDiskSelect(rootPart)) {
             char makeRootPart[128] = "mkfs.ext4 /dev/";

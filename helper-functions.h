@@ -183,3 +183,8 @@ void printWelcome() {
     printf("|----------------------------------------------------| \n");
     white();
 }
+
+void flushInput() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}

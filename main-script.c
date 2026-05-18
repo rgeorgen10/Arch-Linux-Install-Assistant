@@ -86,18 +86,61 @@ enterBootPartUefi:
             char bootPart[32];
             scanf("%s", &bootPart);
             if(checkDiskSelect(bootPart)) {
+                char makeBootPart[32] = "mkfs.fat -F32 /dev/";
+                strcat(makeBootPart, bootPart);
+                system(makeBootPart);
+                char mountBootPart[32] = "mount /dev/";
+                strcat(mountBootPart, bootPart);
+                strcat(mountBootPart, " /mnt/boot");
+                system(mountBootPart);
                 goto enterSwapPartUefi;
             }
             else {
                 clearPrevLine();
                 fflush(stdout);
-                printf("Partition not found: Enter the installation location e.g. sda1: ");
+                printf("Partition not found: Enter the boot location e.g. sda1: ");
                 goto enterBootPartUefi;
             }
-            printf("Enter the Swap Partition Location e.g. sda2: ");
-enterSwapPartUefi:
-
         }
+        printf("Enter the Swap Partition Location e.g. sda2: ");
+enterSwapPartUefi:
+        char swapPart[32];
+        scanf("%s", &swapPart);
+        if(checkDiskSelect(swapPart)) {
+            char makeSwapPart[32] = "mkswap /dev/";
+            strcat(makeSwapPart, swapPart);
+            system(makeSwapPart);
+            char mountSwapPart[32] = "swapon /dev/";
+            strcat(mountSwapPart, swapPart);
+            goto enterRootPartUefi;
+        }
+        else {
+            clearPrevLine();
+            fflush(stdout);
+            printf("Partition not found: Enter the Swap location e.g. sda1: ");
+            goto enterSwapPartUefi;
+        }
+        printf("\nEnter the Root Partition Location e.g. sda2: ");
+enterRootPartUefi:
+        char rootPart[32];
+        scanf("%s", &rootPart);
+        if(checkDiskSelect(rootPart)) {
+            char makeRootPart[32] = "mkfs.ext4 /dev/";
+            strcat(makeRootPart, rootPart);
+            system(makeRootPart);
+            char mountRootPart[32] = "mount /dev/";
+            strcat(mountRootPart, rootPart);
+            strcat(mountRootPart, " /mnt/boot");
+            system(mountRootPart);
+            goto baseInstall;
+        }
+        else {
+            clearPrevLine();
+            fflush(stdout);
+            printf("Partition not found: Enter the Root location e.g. sda1: ");
+            goto enterRootPartUefi;
+        }        
+baseInstall:
     }
     return 0;
 }

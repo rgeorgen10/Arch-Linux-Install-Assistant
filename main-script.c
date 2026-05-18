@@ -85,9 +85,11 @@ diskPrompt2:
         if(uefi) {
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
+            fflush(stdout);
             char bootPart[128];
-            flushInput();
-            scanf("%s", bootPart);
+            if (fgets(bootPart, sizeof(bootPart), stdin) == NULL) goto enterBootPartUefi;
+            bootPart[strcspn(bootPart, "\n")] = 0;
+            if (strlen(bootPart) == 0) goto enterBootPartUefi;
             if(checkDiskSelect(bootPart)) {
                 char makeBootPart[128] = "mkfs.fat -F32 -I /dev/";
                 strcat(makeBootPart, bootPart);
@@ -109,9 +111,11 @@ enterBootPartUefi:
         }
         printf("Enter the Swap Partition Location e.g. sda2: ");
 enterSwapPartUefi:
+        fflush(stdout);
         char swapPart[128];
-        flushInput();
-        scanf("%s", swapPart);
+        if (fgets(swapPart, sizeof(swapPart), stdin) == NULL) goto enterSwapPartUefi;
+        swapPart[strcspn(swapPart, "\n")] = 0;
+        if (strlen(swapPart) == 0) goto enterSwapPartUefi;
         if(checkDiskSelect(swapPart)) {
             char makeSwapPart[128] = "mkswap -f /dev/";
             strcat(makeSwapPart, swapPart);
@@ -129,9 +133,11 @@ enterSwapPartUefi:
         }
         printf("\nEnter the Root Partition Location e.g. sda2: ");
 enterRootPartUefi:
+        fflush(stdout);
         char rootPart[128];
-        flushInput();
-        scanf("%s", rootPart);
+        if (fgets(rootPart, sizeof(rootPart), stdin) == NULL) goto enterRootPartUefi;
+        rootPart[strcspn(rootPart, "\n")] = 0;
+        if (strlen(rootPart) == 0) goto enterRootPartUefi;
         if(checkDiskSelect(rootPart)) {
             char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);

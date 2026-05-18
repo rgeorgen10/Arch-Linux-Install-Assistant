@@ -11,7 +11,7 @@ int main() {
     printf("Would you like to continue with the installation of Arch Linux (y/n): ");
 continuePrompt:       // Ask user to continue
     char continueVar[2];
-    scanf("%s", &continueVar);
+    scanf("%s", continueVar);
     if(strcmp(continueVar, "Y") == 0 || strcmp(continueVar,"y") == 0) {
         goto continueScript;
     }
@@ -33,14 +33,14 @@ continueScript:   // Continue the script
     printf("Would you like to manually partition using FDISK or automatically partition (m/a): ");   // Prompt if the user wants automatic or manual partitioning.
 partitionPrompt:
     char partitioning[2];
-    scanf("%s", &partitioning);
+    scanf("%s", partitioning);
     if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) {          // If the user wants automatic partitioning
         system("fdisk -l");
         green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt:
         char diskSelection[10];
-        scanf("%s", &diskSelection);
+        scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if (diskExists) diskAutoFormat(diskSelection, uefi);     // If disk specified exists, auto format
         else {
@@ -62,13 +62,13 @@ diskPrompt:
         printf("Make Sure to Write Down the Address of Each Partition e.g. /dev/sda1 \n");
         printf("Press Enter to continue to FDISK: ");
         char fdiskCont[128];
-        scanf("%s", &fdiskCont);
+        scanf("%s", fdiskCont);
         system("fdisk -l");
         green();
         printf("\nSelect an installation disk by typing the disk e.g. sda: ");      // Display the disk options and have the user select one.
 diskPrompt2:
         char diskSelection[10];
-        scanf("%s", &diskSelection);
+        scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
         if (!diskExists) {
             clearPrevLine();
@@ -84,7 +84,7 @@ diskPrompt2:
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
             char bootPart[32];
-            scanf("%s", &bootPart);
+            scanf("%s", bootPart);
             if(checkDiskSelect(bootPart)) {
                 char makeBootPart[32] = "mkfs.fat -F32 /dev/";
                 strcat(makeBootPart, bootPart);
@@ -105,7 +105,7 @@ enterBootPartUefi:
         printf("Enter the Swap Partition Location e.g. sda2: ");
 enterSwapPartUefi:
         char swapPart[32];
-        scanf("%s", &swapPart);
+        scanf("%s", swapPart);
         if(checkDiskSelect(swapPart)) {
             char makeSwapPart[32] = "mkswap /dev/";
             strcat(makeSwapPart, swapPart);
@@ -123,7 +123,7 @@ enterSwapPartUefi:
         printf("\nEnter the Root Partition Location e.g. sda2: ");
 enterRootPartUefi:
         char rootPart[32];
-        scanf("%s", &rootPart);
+        scanf("%s", rootPart);
         if(checkDiskSelect(rootPart)) {
             char makeRootPart[32] = "mkfs.ext4 /dev/";
             strcat(makeRootPart, rootPart);

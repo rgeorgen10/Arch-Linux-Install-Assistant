@@ -94,7 +94,6 @@ enterBootPartUefi:
                 char makeBootPart[128] = "mkfs.fat -F32 -I /dev/";
                 strcat(makeBootPart, bootPart);
                 system(makeBootPart);
-                printf("DEBUG: mkfs.fat returned\n");
                 fflush(stdout); 
             }
             else {

@@ -96,7 +96,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         // printf(formatBoot);
         system(formatBoot);
 
-        char formatSwap[128] = "mkswap -F ";           // don't forget swap!
+        char formatSwap[128] = "mkswap -f ";           // don't forget swap!
         strcat(formatSwap, diskAddr);
         strcat(formatSwap, "2");
         // printf(formatSwap);
@@ -139,7 +139,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         // printf(makeRoot);
         system(makeRoot);
 
-        char formatSwap[128] = "mkswap -F ";           // don't forget swap!
+        char formatSwap[128] = "mkswap -f ";           // don't forget swap!
         strcat(formatSwap, diskAddr);
         strcat(formatSwap, "1");
         // printf(formatSwap);

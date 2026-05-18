@@ -111,7 +111,7 @@ enterSwapPartUefi:
         flushInput();
         scanf("%s", swapPart);
         if(checkDiskSelect(swapPart)) {
-            char makeSwapPart[128] = "mkswap -F /dev/";
+            char makeSwapPart[128] = "mkswap -f /dev/";
             strcat(makeSwapPart, swapPart);
             system(makeSwapPart);
             char mountSwapPart[128] = "swapon /dev/";

@@ -254,7 +254,7 @@ setLocales:
         localePtr = fopen("/etc/locale.gen", "a");  // Edit the file to add locales
         char localeString[32] = "\n#";
         strcat(localeString, locale);
-        fprintf(localePtr, localeString);
+        fprintf(localePtr, "%s", localeString);
         fclose(localePtr);
 
         FILE *langPtr;
@@ -262,7 +262,7 @@ setLocales:
         char langString[32] = "LANG=";
         strcat(langString, locale);
         strcat(langString, ".UTF-8");
-        fprintf(langPtr, langString);
+        fprintf(langPtr, "%s", langString);
         fclose(langPtr);
 
         printf("The locale has been added. Do you want to add another (y/n): ");
@@ -278,7 +278,7 @@ setLocales:
         scanf("%s", hostname);
         FILE *hostnamePtr;
         hostnamePtr = fopen("/etc/hostname", "a");
-        fprintf(hostnamePtr, hostname);
+        fprintf(hostnamePtr, "%s", hostname);
         fclose(hostnamePtr);
         
         printf("Generate INTRAMFS\n");  // generate inframfs
@@ -305,13 +305,13 @@ setLocales:
         }
         else {
             if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) { // if the user chose auto partitioning, we know that partition disk2 is the root partition
-                char grubCmd = "grub-install --target=i386-pc /dev/";
+                char grubCmd[128] = "grub-install --target=i386-pc /dev/";
                 strcat(grubCmd, diskSelection);
                 strcat(grubCmd, "2");
                 system(grubCmd);
             }
             else {
-                char grubCmd = "grub-install --target=i386-pc /dev/"; // otherwise, the user gave us the root partition when manual partioning
+                char grubCmd[128] = "grub-install --target=i386-pc /dev/"; // otherwise, the user gave us the root partition when manual partioning
                 strcat(grubCmd, rootPart);
                 system(grubCmd);
             }

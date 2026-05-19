@@ -82,6 +82,15 @@ diskPrompt2:
         strcat(fdiskCMD, diskSelection);
         system(fdiskCMD);
         green();
+        printf("Do you want to format another disk? (y/n:) ");
+        char formatMore[32];
+        scanf("%s", formatMore);
+        if(strcmp(formatMore, "y") == 0 || strcmp(formatMore, "Y") == 0) {
+            clearPrevLine();
+            fflush(stdout);
+            printf("\nSelect an installation disk by typing the disk e.g. sda: ");
+            goto diskPrompt2;
+        }
         char bootPart[128];
         if(uefi) {
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
@@ -153,7 +162,35 @@ enterRootPartUefi:
             system(mountBootPart);
             goto enterSwapPartUefi;
         }        
+        printf("\nEnter the Home Partition Location e.g. sda2 (Enter n if you don't want a separate home partition): ");
+enterHomePartUefi:
+        fflush(stdout);
+        char homePart[128];
+        if (fgets(homePart, sizeof(homePart), stdin) == NULL) goto enterHomePartUefi;
+        homePart[strcspn(homePart, "\n")] = 0;
+        if (strlen(homePart) == 0) goto enterHomePartUefi;
+        if (strcmp(homePart, "n") == 0 || strcmp(homePart, "N") == 0) {
+            goto baseInstall;
+        }
+        else {
+            if(checkDiskSelect(homePart)) {
+                char makeHomePart[128] = "mkfs.ext4 -F /dev/";
+                strcat(makeHomePart, homePart);        
+                system(makeHomePart);
+                char mountHomePart[128] = "mount --mkdir /dev/";
+                strcat(mountHomePart, homePart);
+                strcat(mountHomePart, " /mnt/home");
+                system(mountHomePart);
+            }
+            else {
+                clearPrevLine();
+                fflush(stdout);
+                printf("Partition not found: Enter the Home location e.g. sda1: ");
+                goto enterHomePartUefi;
+            }      
+        }  
 baseInstall:
+        printf("Partitioning Has Been Completed!\n");
     }
     return 0;
 }

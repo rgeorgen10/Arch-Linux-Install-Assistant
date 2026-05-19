@@ -117,7 +117,6 @@ enterSwapPartUefi:
             char mountSwapPart[128] = "swapon /dev/";
             strcat(mountSwapPart, swapPart);
             system(mountSwapPart);
-            printf(mountSwapPart);
             goto enterRootPartUefi;
         }
         else {
@@ -137,6 +136,7 @@ enterRootPartUefi:
             char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);
             system(makeRootPart);
+            printf(makeRootPart);
             char mountRootPart[128] = "mount /dev/";
             strcat(mountRootPart, rootPart);
             strcat(mountRootPart, " /mnt");

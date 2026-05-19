@@ -139,7 +139,6 @@ enterRootPartUefi:
             strcat(mountRootPart, rootPart);
             strcat(mountRootPart, " /mnt");
             system(mountRootPart);
-            goto baseInstall;
         }
         else {
             clearPrevLine();

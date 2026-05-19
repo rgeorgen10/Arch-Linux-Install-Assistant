@@ -114,9 +114,9 @@ enterSwapPartUefi:
             char makeSwapPart[128] = "mkswap -f /dev/";
             strcat(makeSwapPart, swapPart);
             system(makeSwapPart);
-            printf("DEBUG");
             char mountSwapPart[128] = "swapon /dev/";
             strcat(mountSwapPart, swapPart);
+            printf(mountSwapPart);
             system(mountSwapPart);
             goto enterRootPartUefi;
         }

@@ -60,7 +60,7 @@ diskPrompt:
         printf("3. A Root Partition \n");
         printf("4. A Separate Home Partition (Not Required)\n");
         printf("Make Sure to Write Down the Address of Each Partition e.g. /dev/sda1 \n");
-        printf("Press Enter to continue to FDISK: ");
+        printf("Type y and press enter to continue to FDISK: ");
         char fdiskCont[128];
         flushInput();
         scanf("%s", fdiskCont);
@@ -160,7 +160,6 @@ enterRootPartUefi:
             strcat(mountBootPart, bootPart);
             strcat(mountBootPart, " /mnt/boot");
             system(mountBootPart);
-            goto enterSwapPartUefi;
         }        
         printf("\nEnter the Home Partition Location e.g. sda2 (Enter n if you don't want a separate home partition): ");
 enterHomePartUefi:

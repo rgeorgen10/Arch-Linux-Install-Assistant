@@ -80,12 +80,12 @@ diskPrompt2:
         }
         char fdiskCMD[128] = "fdisk /dev/";
         strcat(fdiskCMD, diskSelection);
-        system(fdiskCMD);
+        system(fdiskCMD);                                       // Open fdisk for the selected disk
         green();
-        printf("Do you want to format another disk? (y/n:) ");
+        printf("Do you want to format another disk? (y/n:) ");  // prompt to format more disks
         char formatMore[32];
         scanf("%s", formatMore);
-        if(strcmp(formatMore, "y") == 0 || strcmp(formatMore, "Y") == 0) {
+        if(strcmp(formatMore, "y") == 0 || strcmp(formatMore, "Y") == 0) {  
             clearPrevLine();
             fflush(stdout);
             printf("\nSelect an installation disk by typing the disk e.g. sda: ");
@@ -96,10 +96,10 @@ diskPrompt2:
             printf("\nEnter The Boot Partition Location e.g. sda1: ");
 enterBootPartUefi:
             fflush(stdout);
-            if (fgets(bootPart, sizeof(bootPart), stdin) == NULL) goto enterBootPartUefi;
+            if (fgets(bootPart, sizeof(bootPart), stdin) == NULL) goto enterBootPartUefi; 
             bootPart[strcspn(bootPart, "\n")] = 0;
             if (strlen(bootPart) == 0) goto enterBootPartUefi;
-            if(checkDiskSelect(bootPart)) {
+            if(checkDiskSelect(bootPart)) {    // format boot partition if UEFI
                 white();
                 char makeBootPart[128] = "mkfs.fat -F32 -I /dev/";
                 strcat(makeBootPart, bootPart);
@@ -121,7 +121,7 @@ enterSwapPartUefi:
         if (fgets(swapPart, sizeof(swapPart), stdin) == NULL) goto enterSwapPartUefi;
         swapPart[strcspn(swapPart, "\n")] = 0;
         if (strlen(swapPart) == 0) goto enterSwapPartUefi;
-        if(checkDiskSelect(swapPart)) {
+        if(checkDiskSelect(swapPart)) {  // make swap partition and start SWAP
             white();
             char makeSwapPart[128] = "mkswap -f /dev/";
             strcat(makeSwapPart, swapPart);
@@ -144,7 +144,7 @@ enterRootPartUefi:
         if (fgets(rootPart, sizeof(rootPart), stdin) == NULL) goto enterRootPartUefi;
         rootPart[strcspn(rootPart, "\n")] = 0;
         if (strlen(rootPart) == 0) goto enterRootPartUefi;
-        if(checkDiskSelect(rootPart)) {
+        if(checkDiskSelect(rootPart)) {  // format and mount root partition
             white();
             char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);        
@@ -161,7 +161,7 @@ enterRootPartUefi:
             printf("Partition not found: Enter the Root location e.g. sda1: ");
             goto enterRootPartUefi;
         }
-        if(uefi) {
+        if(uefi) {    // mount boot partition if UEFI
             char mountBootPart[128] = "mount --mkdir /dev/";
             strcat(mountBootPart, bootPart);
             strcat(mountBootPart, " /mnt/boot");
@@ -178,7 +178,7 @@ enterHomePartUefi:
             goto baseInstall;
         }
         else {
-            if(checkDiskSelect(homePart)) {
+            if(checkDiskSelect(homePart)) {  // format and mount home partition if requested by the user
                 white();
                 char makeHomePart[128] = "mkfs.ext4 -F /dev/";
                 strcat(makeHomePart, homePart);        
@@ -198,6 +198,40 @@ enterHomePartUefi:
         }  
 baseInstall:
         printf("Partitioning Has Been Completed!\n");
+continueBaseInstallPrompt:
+        printf("Continue to Base Install (y/n): ");
+        char doBaseInstall[32];
+        scanf("%s", doBaseInstall);
+        if(!(strcmp(doBaseInstall, "y") == 0 || strcmp(doBaseInstall, "Y") == 0)) {
+            printf("Script Terminated By User After Partitioning\n");
+            exit(0);
+        } 
+        system("touch /mnt/etc/vsconsole.conf");
+        printf("Select the kernel you want to install: \n");
+        printf("1. Up to date Linux Kernel (linux)\n");
+        printf("2. Long Term Support Linux Kernel (linux-lts)\n");
+        printf("3. Install Both Kernels\n");
+        printf("Type the number with the corresponding option and press enter: ");
+        char kernelOption[16];
+        scanf("%s", kernelOption);
+        white();
+        if(strcmp(kernelOption, "1") == 0) {  // The user wants to install linux kernel
+            system("pacstrap -K /mnt base linux linux-firmware");
+        }
+        else if(strcmp(kernelOption, "2") == 0) {  // The user wants to install linux-lts kernel
+            system("pacstrap -K /mnt base linux-lts linux-firmware");
+        }
+        else if(strcmp(kernelOption, "3") == 0) {  // The user wants to install linux, linux-lts kernel
+            system("pacstrap -K /mnt base linux linux-lts linux-firmware");
+        }
+        else {   // The user didn't select a valid option, ask again
+            green();
+            clearPrevLine();
+            fflush(stdout);
+            goto continueBaseInstallPrompt;
+        }
+        green();
+        printf("The base system has been installed! Now we can continue to configuring the new system.\n");
     }
     return 0;
 }

@@ -135,8 +135,8 @@ enterRootPartUefi:
         if(checkDiskSelect(rootPart)) {
             char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);
+            printf(makeRootPart);            
             system(makeRootPart);
-            printf(makeRootPart);
             char mountRootPart[128] = "mount /dev/";
             strcat(mountRootPart, rootPart);
             strcat(mountRootPart, " /mnt");

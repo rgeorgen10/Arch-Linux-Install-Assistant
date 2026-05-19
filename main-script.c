@@ -232,6 +232,94 @@ continueBaseInstallPrompt:
         }
         green();
         printf("The base system has been installed! Now we can continue to configuring the new system.\n");
+        printf("Generating fstab\n");
+        white();
+        system("genfstab -U /mnt/etc/fstab");
+        green();
+        printf("Entering Arch Chroot\n");
+        printf("Lets set the timezone of the system! Enter the timezone as Area/Location e.g. America/Denver");
+        char timeZone[128];
+        scanf("%s", timeZone);
+        char timeZoneCmd[256] = "ln -sf /usr/share/zoneinfo/";
+        strcat(timeZoneCmd, timeZone);
+        system(timeZoneCmd);
+        system("hwclock --systohc");
+        printf("Timezone has been set!\n");
+setLocales:
+        printf("Enter the locale you would like to use e.g. en_US: ");
+        char locale[32];
+        scanf("%s", locale);
+
+        FILE *localePtr;
+        localePtr = fopen("/etc/locale.gen", "a");  // Edit the file to add locales
+        char localeString[32] = "\n#";
+        strcat(localeString, locale);
+        fprintf(localePtr, localeString);
+        fclose(localePtr);
+
+        FILE *langPtr;
+        langPtr = fopen("/etc/locale.conf", "a"); // Edit the file to add the LANG var
+        char langString[32] = "LANG=";
+        strcat(langString, locale);
+        strcat(langString, ".UTF-8");
+        fprintf(langPtr, langString);
+        fclose(langPtr);
+
+        printf("The locale has been added. Do you want to add another (y/n): ");
+        char addLocale[16];
+        scanf("%s", addLocale);
+        if(!(strcmp(addLocale, "y") == 0 || strcmp(addLocale, "Y") == 0)) {  // Prompt if the user wants to add more locales
+            clearPrevLine();
+            fflush(stdout);
+            goto setLocales;
+        }
+        printf("Type the hostname that you want to configure (Your computer's name on the network): "); // Add the hostname file
+        char hostname[128];
+        scanf("%s", hostname);
+        FILE *hostnamePtr;
+        hostnamePtr = fopen("/etc/hostname", "a");
+        fprintf(hostnamePtr, hostname);
+        fclose(hostnamePtr);
+        
+        printf("Generate INTRAMFS\n");  // generate inframfs
+        white();
+        system("mkinitcpio -P");
+        system("passwd");
+
+        green();
+        printf("Installing GRUB bootloader package\n");
+        white();
+        system("pacman -S grub --noconfirm");
+        green();
+        printf("Would you like to install os-prober to detect other operating systems for dual boot (y/n): ");
+        char dualBoot[16];
+        scanf("%s", dualBoot);
+        if(strcmp(dualBoot, "y") == 0 || strcmp(dualBoot, "Y") == 0) {
+            white();
+            system("pacman -S os-prober --noconfirm");
+        }
+        green();
+        printf("Installing GRUB bootloader to the system\n");
+        if(uefi) {
+            system("grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCH");
+        }
+        else {
+            if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) { // if the user chose auto partitioning, we know that partition disk2 is the root partition
+                char grubCmd = "grub-install --target=i386-pc /dev/";
+                strcat(grubCmd, diskSelection);
+                strcat(grubCmd, "2");
+                system(grubCmd);
+            }
+            else {
+                char grubCmd = "grub-install --target=i386-pc /dev/"; // otherwise, the user gave us the root partition when manual partioning
+                strcat(grubCmd, rootPart);
+                system(grubCmd);
+            }
+        }
+        green();
+        printf("Grub has been installed into the system!\n");
+        white();
+        system("pacman -S networkmanager --noconfirm");
     }
     return 0;
 }

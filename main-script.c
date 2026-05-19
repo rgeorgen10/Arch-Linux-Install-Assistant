@@ -100,10 +100,12 @@ enterBootPartUefi:
             bootPart[strcspn(bootPart, "\n")] = 0;
             if (strlen(bootPart) == 0) goto enterBootPartUefi;
             if(checkDiskSelect(bootPart)) {
+                white();
                 char makeBootPart[128] = "mkfs.fat -F32 -I /dev/";
                 strcat(makeBootPart, bootPart);
                 system(makeBootPart);
                 fflush(stdout); 
+                green();
             }
             else {
                 clearPrevLine();
@@ -120,12 +122,14 @@ enterSwapPartUefi:
         swapPart[strcspn(swapPart, "\n")] = 0;
         if (strlen(swapPart) == 0) goto enterSwapPartUefi;
         if(checkDiskSelect(swapPart)) {
+            white();
             char makeSwapPart[128] = "mkswap -f /dev/";
             strcat(makeSwapPart, swapPart);
             system(makeSwapPart);
             char mountSwapPart[128] = "swapon /dev/";
             strcat(mountSwapPart, swapPart);
             system(mountSwapPart);
+            green();
         }
         else {
             clearPrevLine();
@@ -141,6 +145,7 @@ enterRootPartUefi:
         rootPart[strcspn(rootPart, "\n")] = 0;
         if (strlen(rootPart) == 0) goto enterRootPartUefi;
         if(checkDiskSelect(rootPart)) {
+            white();
             char makeRootPart[128] = "mkfs.ext4 -F /dev/";
             strcat(makeRootPart, rootPart);        
             system(makeRootPart);
@@ -148,6 +153,7 @@ enterRootPartUefi:
             strcat(mountRootPart, rootPart);
             strcat(mountRootPart, " /mnt");
             system(mountRootPart);
+            green();
         }
         else {
             clearPrevLine();
@@ -173,6 +179,7 @@ enterHomePartUefi:
         }
         else {
             if(checkDiskSelect(homePart)) {
+                white();
                 char makeHomePart[128] = "mkfs.ext4 -F /dev/";
                 strcat(makeHomePart, homePart);        
                 system(makeHomePart);
@@ -180,6 +187,7 @@ enterHomePartUefi:
                 strcat(mountHomePart, homePart);
                 strcat(mountHomePart, " /mnt/home");
                 system(mountHomePart);
+                green();
             }
             else {
                 clearPrevLine();

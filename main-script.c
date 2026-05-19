@@ -116,8 +116,8 @@ enterSwapPartUefi:
             system(makeSwapPart);
             char mountSwapPart[128] = "swapon /dev/";
             strcat(mountSwapPart, swapPart);
-            printf(mountSwapPart);
             system(mountSwapPart);
+            printf(mountSwapPart);
             goto enterRootPartUefi;
         }
         else {

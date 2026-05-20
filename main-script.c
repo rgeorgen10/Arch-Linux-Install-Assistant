@@ -46,6 +46,7 @@ partitionPrompt:
 diskPrompt:
         scanf("%s", diskSelection);
         bool diskExists = checkDiskSelect(diskSelection);            // Stores if the disk the user specified exists
+        white();
         if (diskExists) diskAutoFormat(diskSelection, uefi);     // If disk specified exists, auto format
         else {
             clearPrevLine();
@@ -53,8 +54,7 @@ diskPrompt:
             fflush(stdout);
             goto diskPrompt;
         }
-        white();
-        printf("Disks have been successfully partitioned");
+        green();
     }
     else {  // If user wants to use FDISK
         green();
@@ -201,7 +201,7 @@ enterHomePartUefi:
         }  
     }
 baseInstall:
-    printf("Partitioning Has Been Completed!\n");
+    printf("\nPartitioning Has Been Completed!\n");
 continueBaseInstallPrompt:
     green();
     printf("Continue to Base Install (y/n): ");

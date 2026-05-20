@@ -335,5 +335,6 @@ setLocales:
     printf("Grub has been installed into the system!\n");
     white();
     system("arch-chroot /mnt pacman -S networkmanager --noconfirm");
+    printf("\n%s", rootDisk);
     return 0;
 }

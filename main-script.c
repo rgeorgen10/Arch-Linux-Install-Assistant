@@ -289,12 +289,13 @@ setLocales:
     printf("Generate INTRAMFS\n");  // generate inframfs
     white();
     system("arch-chroot /mnt mkinitcpio -P");
+    green();
+    printf("Enter your root password:\n");
+    white();
     system("arch-chroot /mnt passwd");
-
     green();
     printf("Installing GRUB bootloader package\n");
     white();
-    getchar();
     system("arch-chroot /mnt pacman -S grub --noconfirm");
     green();
     printf("Would you like to install os-prober to detect other operating systems for dual boot (y/n): ");
@@ -324,6 +325,7 @@ setLocales:
     }
     system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg");
     green();
+    getchar();
     printf("Grub has been installed into the system!\n");
     white();
     system("arch-chroot /mnt pacman -S networkmanager --noconfirm");

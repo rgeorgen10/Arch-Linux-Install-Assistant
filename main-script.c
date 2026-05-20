@@ -60,6 +60,7 @@ diskPrompt:
     else {  // If user wants to use FDISK
         green();
         printf("Use FDISK to create the following partitions: \n");
+        printf("If the system is BIOS, press o when entering FDISK to make MBR paritions:\n");
         printf("1. A boot partition: 1GB (UEFI Systems Only) \n");
         printf("2. A SWAP Partition: Size Variable \n");
         printf("3. A Root Partition \n");

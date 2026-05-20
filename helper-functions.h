@@ -127,6 +127,11 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         system(mountBoot);
     }
     else {  // Case for Legacy BIOS systems
+        char mbr[128] = "parted -s /dev/";
+        strcat(mbr, diskSelection);
+        strcat(mbr, " mklabel msdos");
+        system(mbr);
+        
         char makeSwap[128] = "parted -s /dev/";
         strcat(makeSwap, diskSelection);
         strcat(makeSwap, " mkpart primary linux-swap 0% 8G");

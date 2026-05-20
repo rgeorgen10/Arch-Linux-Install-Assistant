@@ -158,9 +158,9 @@ enterRootPartUefi:
             strcat(mountRootPart, " /mnt");
             system(mountRootPart);
             strcpy(rootDisk, rootPart); // Set the root disk variable for grub install on BIOS systems
-            rootDisk[strlen(rootDisk) - 2] = '\0';
-            if(isdigit(rootDisk[strlen(rootDisk)])) {
-                rootDisk[strlen(rootDisk) - 2] = '\0';
+            rootDisk[strlen(rootDisk) - 1] = '\0';
+            if(!isdigit(rootDisk[strlen(rootDisk) - 1])) {
+                rootDisk[strlen(rootDisk) - 1] = '\0';
             }
             green();
         }

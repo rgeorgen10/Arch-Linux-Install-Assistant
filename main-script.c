@@ -321,6 +321,7 @@ setLocales:
             system(grubCmd);
         }
     }
+    system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg");
     green();
     printf("Grub has been installed into the system!\n");
     white();

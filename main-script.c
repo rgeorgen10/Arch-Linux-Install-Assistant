@@ -294,6 +294,7 @@ setLocales:
     green();
     printf("Installing GRUB bootloader package\n");
     white();
+    getchar();
     system("arch-chroot /mnt pacman -S grub --noconfirm");
     green();
     printf("Would you like to install os-prober to detect other operating systems for dual boot (y/n): ");

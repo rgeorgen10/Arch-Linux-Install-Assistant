@@ -203,6 +203,7 @@ enterHomePartUefi:
 baseInstall:
     printf("Partitioning Has Been Completed!\n");
 continueBaseInstallPrompt:
+    green();
     printf("Continue to Base Install (y/n): ");
     char doBaseInstall[32];
     scanf("%s", doBaseInstall);
@@ -238,10 +239,10 @@ continueBaseInstallPrompt:
     printf("The base system has been installed! Now we can continue to configuring the new system.\n");
     printf("Generating fstab\n");
     white();
-    system("genfstab -U /mnt/etc/fstab");
+    system("genfstab -U /mnt >> /mnt/etc/fstab");
     green();
     printf("Entering Arch Chroot\n");
-    printf("Lets set the timezone of the system! Enter the timezone as Area/Location e.g. America/Denver");
+    printf("Lets set the timezone of the system! Enter the timezone as Area/Location e.g. America/Denver: ");
     char timeZone[128];
     scanf("%s", timeZone);
     char timeZoneCmd[256] = "ln -sf /usr/share/zoneinfo/";
@@ -272,7 +273,7 @@ setLocales:
     printf("The locale has been added. Do you want to add another (y/n): ");
     char addLocale[16];
     scanf("%s", addLocale);
-    if(!(strcmp(addLocale, "y") == 0 || strcmp(addLocale, "Y") == 0)) {  // Prompt if the user wants to add more locales
+    if(strcmp(addLocale, "y") == 0 || strcmp(addLocale, "Y") == 0) {  // Prompt if the user wants to add more locales
         clearPrevLine();
         fflush(stdout);
         goto setLocales;

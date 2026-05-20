@@ -308,6 +308,7 @@ setLocales:
     green();
     printf("Installing GRUB bootloader to the system\n");
     if(uefi) {
+        system("arch-chroot /mnt pacman -S efibootmgr --noconfirm");
         system("arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCH");
     }
     else {

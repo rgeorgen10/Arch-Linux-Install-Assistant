@@ -11,6 +11,7 @@ int main() {
     // Disk Vars as global vars
     char diskSelection[64];
     char rootPart[128];
+    char rootDisk[64];
 
     green();
     printf("Would you like to continue with the installation of Arch Linux (y/n): ");
@@ -156,6 +157,11 @@ enterRootPartUefi:
             strcat(mountRootPart, rootPart);
             strcat(mountRootPart, " /mnt");
             system(mountRootPart);
+            strcpy(rootDisk, rootPart); // Set the root disk variable for grub install on BIOS systems
+            rootDisk[strlen(rootDisk) - 2] = '\0';
+            if(isdigit(rootDisk[strlen(rootDisk)])) {
+                rootDisk[strlen(rootDisk) - 2] = '\0';
+            }
             green();
         }
         else {
@@ -315,12 +321,11 @@ setLocales:
         if(strcmp(partitioning, "A") == 0 || strcmp(partitioning, "a") == 0) { // if the user chose auto partitioning, we know that partition disk2 is the root partition
             char grubCmd[128] = "arch-chroot /mnt grub-install --target=i386-pc /dev/";
             strcat(grubCmd, diskSelection);
-            strcat(grubCmd, "2");
             system(grubCmd);
         }
         else {
             char grubCmd[128] = "arch-chroot /mnt grub-install --target=i386-pc /dev/"; // otherwise, the user gave us the root partition when manual partioning
-            strcat(grubCmd, rootPart);
+            strcat(grubCmd, rootDisk);
             system(grubCmd);
         }
     }

@@ -9,7 +9,7 @@ void green() {
 }
 
 void white() {
-    printf("\033[0m");
+    printf("\033[0;37m");
 }
 
 void clear() {

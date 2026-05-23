@@ -336,6 +336,30 @@ setLocales:
     printf("Grub has been installed into the system!\n");
     white();
     system("arch-chroot /mnt pacman -S networkmanager --noconfirm");
-    printf("\n%s", rootDisk);
+    system("arch-chroot /mnt systemctl enable NetworkManager");
+    green();
+
+    printf("Would you like to create a user (y/n): ");    // Prompt the user to create users
+    char userAdd[16];
+    scanf("%s", userAdd);
+    if(strcmp(userAdd, "y") == 0 || strcmp(userAdd, "Y") == 0) {
+addUser:
+        printf("Type the name for the user: ");
+        white();
+        char userName[64];
+        scanf("%s", userName);
+        char userAddCmd[128] = "useradd -m ";
+        strcat(userAddCmd, userName);
+        system(userAddCmd);
+        char userPasswd[64] = "passwd ";
+        strcat(userPasswd, userName);
+        system(userPasswd);
+        green();
+        printf("Would you like to add another user: ");
+        char additionalUser[16];
+        scanf("%s", additionalUser);
+        if(strcmp(additionalUser, "y") == 0 || strcmp(additionalUser, "Y") == 0) goto addUser;
+    }
+
     return 0;
 }

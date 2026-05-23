@@ -175,7 +175,6 @@ void printWelcome() {
     printf("|            Arch Linux Install Assistant            | \n");
     printf("|          --------------------------------          | \n");
     printf("|      This script is designed to assist in the      | \n");
-    white();
     printf("|    installation of Arch Linux. This script will    | \n");
     printf("|           assist with the following:               | \n");
     printf("| 1) Formatting Disks                                | \n");

@@ -339,6 +339,15 @@ setLocales:
     system("arch-chroot /mnt systemctl enable NetworkManager");
     green();
 
+    printf("Would you like to install Sudo (y/n): ");
+    char sudoInst[16];
+    scanf("%s", sudoInst);
+    if(strcmp(sudoInst, "y") == 0 || strcmp(sudoInst, "Y") == 0) { // Install Sudo and give users sudo permissions
+        white();
+        system("pacman -S sudo --noconfirm");
+        green();
+    }
+
     printf("Would you like to create a user (y/n): ");    // Prompt the user to create users
     char userAdd[16];
     scanf("%s", userAdd);
@@ -355,11 +364,29 @@ addUser:
         strcat(userPasswd, userName);
         system(userPasswd);
         green();
+
+        if(strcmp(sudoInst, "y") == 0 || strcmp(sudoInst, "Y") == 0) {    
+            printf("Do you want to give this user sudo permissions (y/n): ");
+            char sudoPerm[16];
+            if(strcmp(sudoPerm, "y") == 0 || strcmp(sudoPerm, "Y") == 0) {      // Prompt to add sudo permissions for this user if the user installed sudo
+                char userSudoCmd[128] = "usermod -aG wheel ";
+                strcat(userSudoCmd, userName);
+                system(userSudoCmd);
+            }
+        }
+
         printf("Would you like to add another user: ");
         char additionalUser[16];
         scanf("%s", additionalUser);
         if(strcmp(additionalUser, "y") == 0 || strcmp(additionalUser, "Y") == 0) goto addUser;
     }
 
+    printf("Would you like to install YAY (AUR Package Manager) (y/n): ");
+    char installYay[16];
+    scanf("%s", installYay);
+    if(strcmp(installYay, "y") == 0 || strcmp(installYay, "Y") == 0) {  // Install Yay
+        // code for the user to install yay
+    }
+    
     return 0;
 }

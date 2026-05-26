@@ -219,6 +219,7 @@ continueBaseInstallPrompt:
         exit(0);
     } 
     system("touch /mnt/etc/vsconsole.conf");
+selectKernel:
     printf("Select the kernel you want to install: \n");
     printf("1. Up to date Linux Kernel (linux)\n");
     printf("2. Long Term Support Linux Kernel (linux-lts)\n");
@@ -240,7 +241,7 @@ continueBaseInstallPrompt:
         green();
         clearPrevLine();
         fflush(stdout);
-        goto continueBaseInstallPrompt;
+        goto selectKernel;
     }
     green();
     printf("The base system has been installed! Now we can continue to configuring the new system.\n");
@@ -369,7 +370,7 @@ addUser:
         white();
         char userName[64];
         scanf("%s", userName);
-        char userAddCmd[128] = "useradd -m ";
+        char userAddCmd[128] = "arch-chroot /mnt useradd -m ";
         strcat(userAddCmd, userName);
         system(userAddCmd);
         char userPasswd[64] = "passwd ";
@@ -388,7 +389,7 @@ addUser:
             }
         }
 
-        printf("Would you like to add another user: ");
+        printf("Would you like to add another user (y/n): ");
         char additionalUser[16];
         scanf("%s", additionalUser);
         if(strcmp(additionalUser, "y") == 0 || strcmp(additionalUser, "Y") == 0) goto addUser;

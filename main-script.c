@@ -383,7 +383,7 @@ addUser:
             char sudoPerm[16];
             scanf("%s", sudoPerm);
             if(strcmp(sudoPerm, "y") == 0 || strcmp(sudoPerm, "Y") == 0) {      // Prompt to add sudo permissions for this user if the user installed sudo
-                char userSudoCmd[128] = "usermod -aG wheel ";
+                char userSudoCmd[128] = "arch-chroot /mnt usermod -aG wheel ";
                 strcat(userSudoCmd, userName);
                 system(userSudoCmd);
             }

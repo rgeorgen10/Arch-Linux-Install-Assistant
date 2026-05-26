@@ -292,6 +292,18 @@ setLocales:
     hostnamePtr = fopen("/mnt/etc/hostname", "a");
     fprintf(hostnamePtr, "%s", hostname);
     fclose(hostnamePtr);
+
+    printf("Installing CPU Microcode\n");   // Install the CPUs microcode
+    int cpu = cpuBrand();
+    if(cpu == 1) {
+        system("arch-chroot /mnt pacman -S amd-ucode --noconfirm");
+    }
+    else if(cpu == 2) {
+        system("arch-chroot /mnt pacman -S intel-ucode --noconfirm");
+    }
+    else {
+        printf("CPU is neither AMD or Intel. Not installing any microcode!\n");
+    }
     
     printf("Generate INTRAMFS\n");  // generate inframfs
     white();
@@ -387,6 +399,80 @@ addUser:
     if(strcmp(installYay, "y") == 0 || strcmp(installYay, "Y") == 0) {  // Install Yay
         // code for the user to install yay
     }
-    
+
+    printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");
+    char instDeskop[16];
+    scanf("%s", instDeskop);
+    if(!strcmp(instDeskop, "y") == 0 || strcmp(instDeskop, "Y") == 0) {            // The user chooses to exit after the base install
+        printf("Script exited by user. Base system is installed and bootable!");
+    }
+
+displayServer:
+    printf("Choose a display server to install:\n");
+    printf("1. Wayland\n");
+    printf("2. Xorg\n");
+    printf("3. Both\n");
+    printf("-------------------------------------\n");
+    char dServer[16];
+    scanf("%s", dServer);
+    if(strcmp(dServer, "1") == 0) {
+        system("pacman -S wayland --noconfirm");
+    }
+    else if(strcmp(dServer, "2") == 0) {
+        system("pacman -S pacman -S xorg-server --noconfirm");
+    }
+    else if(strcmp(dServer, "3") == 0) {
+        system("pacman -S xorg-server wayland --noconfirm");
+    }
+    else {
+        clearPrevLine();
+        fflush(stdout);
+        goto displayServer;
+    }
+
+desktopEnvironment:
+    printf("Choose a desktop environment to install:\n");       // The user chooses a desktop environment and display manager to install. Installs xorg with ones that require it
+    printf("1. KDE Plasma\n");
+    printf("2. GNOME\n");
+    printf("3. Cinnamon\n");
+    printf("4. XFCE\n");
+    printf("5. LXQt\n");
+    printf("6. MATE\n");
+    printf("-------------------------------------\n");
+    char dEnv[16];
+    scanf("%s", dEnv);
+    if(strcmp(dEnv, "1") == 0) {
+        system("pacman -S plasma-meta sddm --noconfirm");
+        system("systemctl enable sddm");
+    }
+    else if(strcmp(dEnv, "2") == 0) {
+        system("pacman -S pacman -S gnome gdm --noconfirm");
+        system("systemctl enable gdm");
+    }
+    else if(strcmp(dEnv, "3") == 0) {
+        system("pacman -S xorg-server lightdm cinnamon --noconfirm");
+        system("systemctl enable lightdm");
+    }
+    else if(strcmp(dEnv, "4") == 0) {
+        system("pacman -S xorg-server xfce4 lightdm --noconfirm");
+        system("systemctl enable lightdm");
+    }
+    else if(strcmp(dEnv, "5") == 0) {
+        system("pacman -S xorg-server lxqt sddm --noconfirm");
+        system("systemctl enable sddm");
+    }
+    else if(strcmp(dEnv, "6") == 0) {
+        system("pacman -S xorg-server mate lightdm --noconfirm");
+        system("systemctl enable lightdm --noconfirm");
+    }
+    else {
+        clearPrevLine();
+        fflush(stdout);
+        goto desktopEnvironment;
+    }
+
+    printf("|---------------------------|\n");
+    printf("| Installation is complete! |\n");
+    printf("|---------------------------|\n");
     return 0;
 }

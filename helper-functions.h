@@ -37,6 +37,37 @@ bool uefiCheck() {
     return false;
 
 }
+
+int cpuBrand() {             // return 1 for AMD, 2 for Intel, 3 for Neither/Unknown
+    char output[16];
+    char amdCheck[512] = "";
+    char intelCheck[512] = "";
+
+    FILE *cpuCmd = popen("lscpu | grep AMD", "r");
+    if(cpuCmd == NULL) return false;
+    while(fgets(output,sizeof(output), cpuCmd) != NULL) {
+        strcat(amdCheck, output);
+    }
+    pclose(cpuCmd);
+    if (!strcmp(amdCheck, "") == 0) {     // if AMD, return 1
+        return 1;
+    }
+
+
+    FILE *cpuCmd2 = popen("lscpu | grep Intel", "r");
+    if(cpuCmd2 == NULL) return false;
+    while(fgets(output,sizeof(output), cpuCmd2) != NULL) {
+        strcat(intelCheck, output);
+    }
+    pclose(cpuCmd2);
+    if (!strcmp(intelCheck, "") == 0) {    // if Intel, return 2
+        return 2;
+    }
+
+    return 3;             // if neither, return 3
+
+}
+
 bool checkDiskSelect(char diskOption[64]) {           // This function could have the bug if the user enters part of the disk name such as sd instead of sda. It will return that sd exists
     char output[512];
     char finalOutput[1024] = "";

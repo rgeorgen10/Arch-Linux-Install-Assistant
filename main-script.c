@@ -380,6 +380,7 @@ addUser:
         if(strcmp(sudoInst, "y") == 0 || strcmp(sudoInst, "Y") == 0) {    
             printf("Do you want to give this user sudo permissions (y/n): ");
             char sudoPerm[16];
+            scanf("%s", sudoPerm);
             if(strcmp(sudoPerm, "y") == 0 || strcmp(sudoPerm, "Y") == 0) {      // Prompt to add sudo permissions for this user if the user installed sudo
                 char userSudoCmd[128] = "usermod -aG wheel ";
                 strcat(userSudoCmd, userName);

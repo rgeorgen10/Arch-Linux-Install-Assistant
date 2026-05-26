@@ -356,7 +356,7 @@ setLocales:
     scanf("%s", sudoInst);
     if(strcmp(sudoInst, "y") == 0 || strcmp(sudoInst, "Y") == 0) { // Install Sudo and give users sudo permissions
         white();
-        system("pacman -S sudo --noconfirm");
+        system("arch-chroot /mnt pacman -S sudo --noconfirm");
         green();
     }
 
@@ -416,13 +416,13 @@ displayServer:
     char dServer[16];
     scanf("%s", dServer);
     if(strcmp(dServer, "1") == 0) {
-        system("pacman -S wayland --noconfirm");
+        system("arch-chroot /mnt pacman -S wayland --noconfirm");
     }
     else if(strcmp(dServer, "2") == 0) {
-        system("pacman -S pacman -S xorg-server --noconfirm");
+        system("arch-chroot /mnt pacman -S pacman -S xorg-server --noconfirm");
     }
     else if(strcmp(dServer, "3") == 0) {
-        system("pacman -S xorg-server wayland --noconfirm");
+        system("arch-chroot /mnt pacman -S xorg-server wayland --noconfirm");
     }
     else {
         clearPrevLine();
@@ -442,28 +442,28 @@ desktopEnvironment:
     char dEnv[16];
     scanf("%s", dEnv);
     if(strcmp(dEnv, "1") == 0) {
-        system("pacman -S plasma-meta sddm --noconfirm");
-        system("systemctl enable sddm");
+        system("arch-chroot /mnt pacman -S plasma-meta sddm --noconfirm");
+        system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "2") == 0) {
-        system("pacman -S pacman -S gnome gdm --noconfirm");
-        system("systemctl enable gdm");
+        system("arch-chroot /mnt pacman -S pacman -S gnome gdm --noconfirm");
+        system("arch-chroot /mnt systemctl enable gdm");
     }
     else if(strcmp(dEnv, "3") == 0) {
-        system("pacman -S xorg-server lightdm cinnamon --noconfirm");
-        system("systemctl enable lightdm");
+        system("arch-chroot /mnt pacman -S xorg-server lightdm cinnamon --noconfirm");
+        system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "4") == 0) {
-        system("pacman -S xorg-server xfce4 lightdm --noconfirm");
-        system("systemctl enable lightdm");
+        system("arch-chroot /mnt pacman -S xorg-server xfce4 lightdm --noconfirm");
+        system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "5") == 0) {
-        system("pacman -S xorg-server lxqt sddm --noconfirm");
-        system("systemctl enable sddm");
+        system("arch-chroot /mnt pacman -S xorg-server lxqt sddm --noconfirm");
+        system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "6") == 0) {
-        system("pacman -S xorg-server mate lightdm --noconfirm");
-        system("systemctl enable lightdm --noconfirm");
+        system("arch-chroot /mnt pacman -S xorg-server mate lightdm --noconfirm");
+        system("arch-chroot /mnt systemctl enable lightdm --noconfirm");
     }
     else {
         clearPrevLine();

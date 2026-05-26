@@ -365,6 +365,8 @@ setLocales:
     char userAdd[16];
     scanf("%s", userAdd);
     if(strcmp(userAdd, "y") == 0 || strcmp(userAdd, "Y") == 0) {
+
+    bool wheelPermission = false;         // is the wheel group uncommented
 addUser:
         printf("Type the name for the user: ");
         white();
@@ -373,7 +375,7 @@ addUser:
         char userAddCmd[128] = "arch-chroot /mnt useradd -m ";
         strcat(userAddCmd, userName);
         system(userAddCmd);
-        char userPasswd[64] = "passwd ";
+        char userPasswd[64] = "arch-chroot /mnt passwd ";
         strcat(userPasswd, userName);
         system(userPasswd);
         green();
@@ -386,6 +388,13 @@ addUser:
                 char userSudoCmd[128] = "arch-chroot /mnt usermod -aG wheel ";
                 strcat(userSudoCmd, userName);
                 system(userSudoCmd);
+
+                if(!wheelPermission) {  // if wheel doesn't have permissions, add them
+                    FILE *sudoers;
+                    sudoers = fopen("/etc/sudoers", "a");
+                    fprintf(sudoers, "%s", "%wheel ALL=(ALL:ALL) ALL"); // add this line to 
+                    fclose(sudoers);
+                }
             }
         }
 

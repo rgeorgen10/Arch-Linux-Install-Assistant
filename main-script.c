@@ -391,7 +391,7 @@ addUser:
 
                 if(!wheelPermission) {  // if wheel doesn't have permissions, add them
                     FILE *sudoers;
-                    sudoers = fopen("/etc/sudoers", "a");
+                    sudoers = fopen("/mnt/etc/sudoers", "a");
                     fprintf(sudoers, "%s", "%wheel ALL=(ALL:ALL) ALL"); // add this line to 
                     fclose(sudoers);
                 }

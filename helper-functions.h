@@ -17,7 +17,7 @@ void clear() {
 }
 
 void clearPrevLine() {
-    printf("\033[F");
+    printf("\033[A\033[2K");
 }
 
 bool uefiCheck() {

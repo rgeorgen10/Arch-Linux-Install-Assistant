@@ -68,10 +68,10 @@ int cpuBrand() {             // return 1 for AMD, 2 for Intel, 3 for Neither/Unk
 
 }
 
-bool checkDiskSelect(char diskOption[64]) {           // This function could have the bug if the user enters part of the disk name such as sd instead of sda. It will return that sd exists
+bool checkDiskSelect(char diskOption[64]) {    
     char output[512];
     char finalOutput[1024] = "";
-    char commandString[50] = "lsblk -f | grep ";
+    char commandString[50] = "lsblk -f | grep -w ";   // -w check for whole disk option phrase
     strcat(commandString, diskOption);
     FILE *fp = popen(commandString, "r");
     if (fp == NULL) return false;

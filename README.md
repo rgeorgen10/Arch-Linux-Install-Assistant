@@ -95,7 +95,6 @@ The assistant will guide you through each step interactively.
 
 ## Known Limitations
 
-- `checkDiskSelect()` may return a false positive if a partial disk name is entered (e.g. `sd` instead of `sda`).
 - YAY (AUR package manager) installation is not yet implemented.
 - Only ext4 is supported as the root filesystem.
 

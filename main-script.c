@@ -461,11 +461,11 @@ desktopEnvironment:
         system("arch-chroot /mnt systemctl enable gdm");
     }
     else if(strcmp(dEnv, "3") == 0) {
-        system("arch-chroot /mnt pacman -S xorg-server lightdm cinnamon --noconfirm");
+        system("arch-chroot /mnt pacman -S xorg-server lightdm lightdm-gtk-greeter cinnamon --noconfirm");
         system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "4") == 0) {
-        system("arch-chroot /mnt pacman -S xorg-server xfce4 lightdm --noconfirm");
+        system("arch-chroot /mnt pacman -S xorg-server xfce4 lightdm lightdm-gtk-greeter --noconfirm");
         system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "5") == 0) {
@@ -473,8 +473,8 @@ desktopEnvironment:
         system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "6") == 0) {
-        system("arch-chroot /mnt pacman -S xorg-server mate lightdm --noconfirm");
-        system("arch-chroot /mnt systemctl enable lightdm --noconfirm");
+        system("arch-chroot /mnt pacman -S xorg-server mate lightdm lightdm-gtk-greeter --noconfirm");
+        system("arch-chroot /mnt systemctl enable lightdm");
     }
     else {
         clearPrevLine();

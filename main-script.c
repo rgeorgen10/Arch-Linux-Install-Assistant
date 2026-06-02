@@ -457,7 +457,7 @@ desktopEnvironment:
         system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "2") == 0) {
-        system("arch-chroot /mnt pacman -S pacman -S gnome gdm --noconfirm");
+        system("arch-chroot /mnt pacman -S gnome gdm --noconfirm");
         system("arch-chroot /mnt systemctl enable gdm");
     }
     else if(strcmp(dEnv, "3") == 0) {

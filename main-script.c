@@ -408,9 +408,16 @@ addUser:
     char installYay[16];
     scanf("%s", installYay);
     if(strcmp(installYay, "y") == 0 || strcmp(installYay, "Y") == 0) {  // Install Yay
-        // code for the user to install yay
+        white();
+        system("arch-chroot /mnt useradd -mG wheel temp");
+        system("arch-chroot /mnt pacman -S --needed --noconfirm git base-devel");
+        system("arch-chroot /mnt echo 'temp:passwd' | chpasswd");
+        system("arch-chroot /mnt sudo -i -u temp cd ~ && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -s");
+        system("arch-chroot /mnt pacman -U /home/temp/yay/*.pkg.tar.zst");
+        system("arch-chroot /mnt rm -r /home/temp");
+        system("arch-chroot /mnt userdel temp");
     }
-
+    green();
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");
     char instDeskop[16];
     scanf("%s", instDeskop);

@@ -411,8 +411,8 @@ addUser:
         white();
         system("arch-chroot /mnt useradd -mG wheel temp");
         system("arch-chroot /mnt pacman -S --needed --noconfirm git base-devel");
-        system("arch-chroot /mnt echo 'temp:passwd' | chpasswd");
-        system("arch-chroot /mnt sudo -i -u temp cd ~ && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -s");
+        system("echo 'temp:passwd' | arch-chroot /mnt chpasswd");
+        system("arch-chroot /mnt sudo -i -u temp cd ~ && git clone https://aur.archlinux.org/yay.git && cd yay && sudo -i -u temp makepkg -s");
         system("arch-chroot /mnt pacman -U /home/temp/yay/*.pkg.tar.zst");
         system("arch-chroot /mnt rm -r /home/temp");
         system("arch-chroot /mnt userdel temp");
@@ -421,8 +421,9 @@ addUser:
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");
     char instDeskop[16];
     scanf("%s", instDeskop);
-    if(!strcmp(instDeskop, "y") == 0 || strcmp(instDeskop, "Y") == 0) {            // The user chooses to exit after the base install
+    if(!strcmp(instDeskop, "n") == 0 || strcmp(instDeskop, "N") == 0) {            // The user chooses to exit after the base install
         printf("Script exited by user. Base system is installed and bootable!");
+        exit(0);
     }
 
 displayServer:

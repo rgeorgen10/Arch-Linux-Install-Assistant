@@ -415,11 +415,11 @@ addUser:
         system("cp /mnt/etc/sudoers /mnt/etc/sudoers.backup");  // move the old sudoers file to sudoers.backup
         FILE *noTempPass;
         noTempPass = fopen("/mnt/etc/sudoers", "a");
-        fprintf(noTempPass, "%s", "temp ALL=(ALL) NOPASSWD: /usr/bin/pacman");  // add rule to sudoers that allows the temp user to run pacman without prompting a sudo password
+        fprintf(noTempPass, "%s", "\ntemp ALL=(ALL) NOPASSWD: /usr/bin/pacman");  // add rule to sudoers that allows the temp user to run pacman without prompting a sudo password
         fclose(noTempPass);
 
         system("echo 'temp:passwd' | arch-chroot /mnt chpasswd");
-        system("arch-chroot /mnt sudo -i -u temp git clone https://aur.archlinux.org/yay.git /home/temp/yay && arch-chroot /mnt sudo -i -u temp sh -c 'cd /home/temp/yay && makepkg -s'");
+        system("arch-chroot /mnt sudo -i -u temp git clone https://aur.archlinux.org/yay.git /home/temp/yay && arch-chroot /mnt sudo -i -u temp sh -c 'cd /home/temp/yay && makepkg -s --noconfirm'");
         system("arch-chroot /mnt bash -c 'cd /home/temp/yay && pacman -U --noconfirm *.pkg.tar.zst'");
 
         system("arch-chroot /mnt rm -r /home/temp");     // cleanup: delete temp user, home directory, and restore normal sudo file

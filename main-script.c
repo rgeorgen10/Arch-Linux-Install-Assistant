@@ -392,7 +392,7 @@ addUser:
                 if(!wheelPermission) {  // if wheel doesn't have permissions, add them
                     FILE *sudoers;
                     sudoers = fopen("/mnt/etc/sudoers", "a");
-                    fprintf(sudoers, "%s", "%wheel ALL=(ALL:ALL) ALL"); // add this line to 
+                    fprintf(sudoers, "%s", "%wheel ALL=(ALL:ALL) ALL"); // add this line to sudoers
                     fclose(sudoers);
                 }
             }
@@ -411,11 +411,21 @@ addUser:
         white();
         system("arch-chroot /mnt useradd -mG wheel temp");
         system("arch-chroot /mnt pacman -S --needed --noconfirm git base-devel");
+
+        system("cp /etc/sudoers /etc/sudoers.backup");  // move the old sudoers file to sudoers.backup
+        FILE *noTempPass;
+        noTempPass = fopen("/etc/sudoers", "a");
+        fprintf(noTempPass, "%s", "temp ALL=(ALL) NOPASSWD: /usr/bin/pacman");  // add rule to sudoers that allows the temp user to run pacman without prompting a sudo password
+        fclose(noTempPass);
+
         system("echo 'temp:passwd' | arch-chroot /mnt chpasswd");
         system("arch-chroot /mnt sudo -i -u temp git clone https://aur.archlinux.org/yay.git /home/temp/yay && arch-chroot /mnt sudo -i -u temp sh -c 'cd /home/temp/yay && makepkg -s'");
-        system("arch-chroot /mnt pacman -U /home/temp/yay/*.pkg.tar.zst");
-        system("arch-chroot /mnt rm -r /home/temp");
+        system("arch-chroot /mnt bash -c 'cd /home/temp/yay && pacman -U --noconfirm *.pkg.tar.zst'");
+
+        system("arch-chroot /mnt rm -r /home/temp");     // cleanup: delete temp user, home directory, and restore normal sudo file
         system("arch-chroot /mnt userdel temp");
+        system("rm /etc/sudoers");
+        system("mv /etc/sudoers.backup /etc/sudoers");  // bring old sudo file back
     }
     green();
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");

@@ -421,7 +421,7 @@ addUser:
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");
     char instDeskop[16];
     scanf("%s", instDeskop);
-    if(!strcmp(instDeskop, "n") == 0 || strcmp(instDeskop, "N") == 0) {            // The user chooses to exit after the base install
+    if(strcmp(instDeskop, "y") == 0 || strcmp(instDeskop, "Y") == 0) {            // The user chooses to exit after the base install
         printf("Script exited by user. Base system is installed and bootable!");
         exit(0);
     }

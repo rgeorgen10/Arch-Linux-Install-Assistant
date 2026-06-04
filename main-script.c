@@ -425,7 +425,7 @@ addUser:
         system("arch-chroot /mnt rm -r /home/temp");     // cleanup: delete temp user, home directory, and restore normal sudo file
         system("arch-chroot /mnt userdel temp");
         system("rm /mnt/etc/sudoers");
-        system("mv /mnt/etc/sudoers.backup /etc/sudoers");  // bring old sudo file back
+        system("mv /mnt/etc/sudoers.backup /mnt/etc/sudoers");  // bring old sudo file back
     }
     green();
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");

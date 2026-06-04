@@ -412,9 +412,9 @@ addUser:
         system("arch-chroot /mnt useradd -mG wheel temp");
         system("arch-chroot /mnt pacman -S --needed --noconfirm git base-devel");
 
-        system("cp /etc/sudoers /etc/sudoers.backup");  // move the old sudoers file to sudoers.backup
+        system("cp /mnt/etc/sudoers /mnt/etc/sudoers.backup");  // move the old sudoers file to sudoers.backup
         FILE *noTempPass;
-        noTempPass = fopen("/etc/sudoers", "a");
+        noTempPass = fopen("/mnt/etc/sudoers", "a");
         fprintf(noTempPass, "%s", "temp ALL=(ALL) NOPASSWD: /usr/bin/pacman");  // add rule to sudoers that allows the temp user to run pacman without prompting a sudo password
         fclose(noTempPass);
 
@@ -424,14 +424,14 @@ addUser:
 
         system("arch-chroot /mnt rm -r /home/temp");     // cleanup: delete temp user, home directory, and restore normal sudo file
         system("arch-chroot /mnt userdel temp");
-        system("rm /etc/sudoers");
-        system("mv /etc/sudoers.backup /etc/sudoers");  // bring old sudo file back
+        system("rm /mnt/etc/sudoers");
+        system("mv /mnt/etc/sudoers.backup /etc/sudoers");  // bring old sudo file back
     }
     green();
     printf("The base system has been installed! Would you like to continue to installing a display-server, desktop-environment, and display manager? (y/n): ");
     char instDeskop[16];
     scanf("%s", instDeskop);
-    if(strcmp(instDeskop, "y") == 0 || strcmp(instDeskop, "Y") == 0) {            // The user chooses to exit after the base install
+    if(!strcmp(instDeskop, "y") == 0 || strcmp(instDeskop, "Y") == 0) {            // The user chooses to exit after the base install
         printf("Script exited by user. Base system is installed and bootable!");
         exit(0);
     }

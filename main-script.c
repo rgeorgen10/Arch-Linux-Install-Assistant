@@ -7,6 +7,7 @@
 
 int main() {
     printWelcome();    // Print Welcome Text and Script Information
+    printf("%d", get_memory_gb());
     // Disk Vars as global vars
     char diskSelection[64];
     char rootPart[128];

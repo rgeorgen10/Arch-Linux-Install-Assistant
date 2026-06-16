@@ -7,7 +7,6 @@
 
 int main() {
     printWelcome();    // Print Welcome Text and Script Information
-
     // Disk Vars as global vars
     char diskSelection[64];
     char rootPart[128];

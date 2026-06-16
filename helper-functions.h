@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <sys/sysinfo.h>
 
 void green() {
     printf("\033[0;32m");
@@ -87,6 +88,8 @@ bool checkDiskSelect(char diskOption[64]) {
     
 }
 void diskAutoFormat(char diskSelection[10], bool uefi) {
+    int memorySize = get_memory_gb();
+    char memoryStr = memorySize + "0"
     char diskAddr[32] = "/dev/";
     strcat(diskAddr, diskSelection);     // store the disk to be used
     if(isdigit(diskSelection[strlen(diskSelection) - 1])) { // checks if partitions are labeled as p1 instead of just 1 ex: /dev/nvme0n1p3
@@ -111,7 +114,8 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
 
         char makeSwap[128] = "parted -s /dev/";
         strcat(makeSwap, diskSelection);
-        strcat(makeSwap, " mkpart primary linux-swap 1001M 8G");
+        strcat(makeSwap, " mkpart primary linux-swap 1001M ");
+        
         // printf(makeSwap);
         system(makeSwap);
 
@@ -200,6 +204,15 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         system(mountSwap);
     }
 }
+
+int get_memory_gb(void) {
+    struct sysinfo info;
+    if (sysinfo(&info) != 0) {
+        return -1;
+    }
+    return (int)((long)info.totalram * info.mem_unit / (1024 * 1024 * 1024));
+}
+
 void printWelcome() {
     green();
     printf("|----------------------------------------------------| \n");

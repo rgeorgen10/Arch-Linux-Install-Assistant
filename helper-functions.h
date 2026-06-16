@@ -121,7 +121,7 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         strcat(makeSwap, swapStr);
         strcat(makeSwap, "M");
         
-        // printf(makeSwap);
+        printf(makeSwap);
         system(makeSwap);
 
         char makeRoot[128] = "parted -s /dev/";

@@ -89,7 +89,7 @@ bool checkDiskSelect(char diskOption[64]) {
 }
 void diskAutoFormat(char diskSelection[10], bool uefi) {
     int memorySize = get_memory_gb();
-    char memoryStr = memorySize + "0"
+
     char diskAddr[32] = "/dev/";
     strcat(diskAddr, diskSelection);     // store the disk to be used
     if(isdigit(diskSelection[strlen(diskSelection) - 1])) { // checks if partitions are labeled as p1 instead of just 1 ex: /dev/nvme0n1p3
@@ -115,6 +115,11 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         char makeSwap[128] = "parted -s /dev/";
         strcat(makeSwap, diskSelection);
         strcat(makeSwap, " mkpart primary linux-swap 1001M ");
+        int swapEndArg = memorySize * 1000 + 1001;
+        char swapStr[8];
+        snprintf(swapStr, sizeof(swapStr), "%d", swapEndArg);
+        strcat(makeSwap, swapStr);
+        strcat(makeSwap, "M");
         
         // printf(makeSwap);
         system(makeSwap);
@@ -169,7 +174,12 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         
         char makeSwap[128] = "parted -s /dev/";
         strcat(makeSwap, diskSelection);
-        strcat(makeSwap, " mkpart primary linux-swap 0% 8G");
+        strcat(makeSwap, " mkpart primary linux-swap 0% ");
+        int swapEndArg = memorySize * 1000;
+        char swapStr[8];
+        snprintf(swapStr, sizeof(swapStr), "%d", swapEndArg);
+        strcat(makeSwap, swapStr);
+        strcat(makeSwap, "M");
         // printf(makeSwap);
         system(makeSwap);
 

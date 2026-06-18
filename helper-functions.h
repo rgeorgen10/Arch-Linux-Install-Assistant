@@ -120,8 +120,6 @@ void diskAutoFormat(char diskSelection[10], bool uefi) {
         snprintf(swapStr, sizeof(swapStr), "%d", swapEndArg);
         strcat(makeSwap, swapStr);
         strcat(makeSwap, "M");
-        
-        printf(makeSwap);
         system(makeSwap);
 
         char makeRoot[128] = "parted -s /dev/";
@@ -220,7 +218,7 @@ int get_memory_gb(void) {
     if (sysinfo(&info) != 0) {
         return -1;
     }
-    return (int)((long)info.totalram * info.mem_unit / (1024 * 1024 * 1024));
+    return (int)((long)info.totalram * info.mem_unit / (1024 * 1024 * 1024) + 1);
 }
 
 void printWelcome() {

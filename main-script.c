@@ -254,6 +254,7 @@ selectKernel:
     scanf("%s", timeZone);
     char timeZoneCmd[256] = "arch-chroot /mnt ln -sf /usr/share/zoneinfo/";
     strcat(timeZoneCmd, timeZone);
+    strcat(timeZoneCmd, " /etc/localtime");
     system(timeZoneCmd);
     system("arch-chroot /mnt hwclock --systohc");
     printf("Timezone has been set!\n");

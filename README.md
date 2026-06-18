@@ -82,13 +82,13 @@ The assistant will guide you through each step interactively.
 | Partition | Size | Format | Mount |
 |---|---|---|---|
 | Boot | 1 GB | FAT32 | `/boot` |
-| Swap | ~7 GB | swap | — |
+| Swap | System RAM Size | swap | — |
 | Root | Remaining | ext4 | `/mnt` |
 
 ### BIOS/Legacy Systems
 | Partition | Size | Format | Mount |
 |---|---|---|---|
-| Swap | ~8 GB | swap | — |
+| Swap | System RAM Size | swap | — |
 | Root | Remaining | ext4 | `/mnt` |
 
 ---

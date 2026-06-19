@@ -329,6 +329,7 @@ setLocales:
     green();
     printf("Installing GRUB bootloader to the system\n");
     if(uefi) {
+        white();
         system("arch-chroot /mnt pacman -S efibootmgr --noconfirm");
         system("arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCH");
     }
@@ -370,7 +371,6 @@ setLocales:
     bool wheelPermission = false;         // is the wheel group uncommented
 addUser:
         printf("Type the name for the user: ");
-        white();
         char userName[64];
         scanf("%s", userName);
         char userAddCmd[128] = "arch-chroot /mnt useradd -m ";
@@ -472,26 +472,32 @@ desktopEnvironment:
     char dEnv[16];
     scanf("%s", dEnv);
     if(strcmp(dEnv, "1") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S plasma-meta sddm --noconfirm");
         system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "2") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S gnome gdm --noconfirm");
         system("arch-chroot /mnt systemctl enable gdm");
     }
     else if(strcmp(dEnv, "3") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S xorg-server lightdm lightdm-gtk-greeter cinnamon --noconfirm");
         system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "4") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S xorg-server xfce4 lightdm lightdm-gtk-greeter --noconfirm");
         system("arch-chroot /mnt systemctl enable lightdm");
     }
     else if(strcmp(dEnv, "5") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S xorg-server lxqt sddm --noconfirm");
         system("arch-chroot /mnt systemctl enable sddm");
     }
     else if(strcmp(dEnv, "6") == 0) {
+        white();
         system("arch-chroot /mnt pacman -S xorg-server mate lightdm lightdm-gtk-greeter --noconfirm");
         system("arch-chroot /mnt systemctl enable lightdm");
     }

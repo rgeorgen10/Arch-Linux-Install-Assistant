@@ -295,6 +295,7 @@ setLocales:
     fclose(hostnamePtr);
 
     printf("Installing CPU Microcode\n");   // Install the CPUs microcode
+    white();
     int cpu = cpuBrand();
     if(cpu == 1) {
         system("arch-chroot /mnt pacman -S amd-ucode --noconfirm");
@@ -305,7 +306,7 @@ setLocales:
     else {
         printf("CPU is neither AMD or Intel. Not installing any microcode!\n");
     }
-    
+    green();
     printf("Generate INTRAMFS\n");  // generate inframfs
     white();
     system("arch-chroot /mnt mkinitcpio -P");

@@ -95,7 +95,6 @@ The assistant will guide you through each step interactively.
 
 ## Known Limitations
 
-- YAY (AUR package manager) installation is not yet implemented.
 - Only ext4 is supported as the root filesystem.
 
 ---

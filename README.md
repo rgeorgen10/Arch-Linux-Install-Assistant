@@ -34,7 +34,6 @@ A terminal-based installation assistant for Arch Linux, written in C. This tool 
 ## Requirements
 
 - Must be run from an **Arch Linux live ISO** environment
-- GCC (available in the live environment)
 - Internet connection
 
 ---

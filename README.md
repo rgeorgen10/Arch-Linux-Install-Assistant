@@ -40,14 +40,21 @@ A terminal-based installation assistant for Arch Linux, written in C. This tool 
 
 ## Setup
 
-Clone the repository:
+Download the script:
 
 ```bash
-git clone https://github.com/rgeorgen10/Arch-Linux-Install-Assistant
-cd Arch-Linux-Install-Assistant
-./main-script
+curl -O https://georgenswebsite.com/resources/arch-install
 ```
 
+Make Executable:
+```bash
+chmod +x arch-install
+```
+
+Run:
+```bash
+./arch-install
+```
 ---
 
 ## Usage
